@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanh Lý Hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .card {
+            border: none;
+            padding: 20px;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+        }
+
+        body {
+        }
+
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+        body {
+            background-color: #eee;
+            font-family: "Poppins", sans-serif;
+            font-weight: 300
+        }
+
+        .height {
+            margin-top: 3vw;
+        }
+
+        .card {
+            border: none;
+            padding: 20px;
+            position: relative
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<header>
+    <div style="background-color: #00833e; height: 5vw; text-align: center">
+        <h1 style="color: white">Header</h1>
+    </div>
+</header>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav d-flex justify-content-between w-100">
+                <a class="nav-link" href="#">Cầm đồ</a>
+                <a class="nav-link" href="#">Thanh lý</a>
+                <a class="nav-link ">Trả đồ</a>
+                <a class="nav-link ">Thông tin cửa hàng</a>
+                <a class="nav-link ">Quản Lý Khách Hàng</a>
+                <a class="nav-link ">Thông tin cá nhân</a>
+                <a class="nav-link ">Nhắn tin</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container mb-5">
+    <div class="row height d-flex justify-content-center align-items-center">
+        <div class="col-md-6">
+            <div class="card px-5 py-4">
+                <div style="text-align: center">
+                    <h1>Thanh lý hàng</h1>
+                </div>
+                <form>
+                    <div class="text-center mt-4 btn-group p-3 m-l-2">
+                        <div class="text-center m-auto">
+                            <button type="button" class="btn btn-outline-success " data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop">
+                                <b class="text-center">Chọn khách hàng</b>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-4 inputs"><label>Tên khách hàng</label>
+                        <p type="text" class="form-control" id="name" name="name" >Nguyễn Đức Thắng</p>
+                    </div>
+                    <div class="mt-4 inputs"><label>Số điện thoại</label>
+                        <p type="text" class="form-control" id="sdt" name="name" >0236589663</p>
+                    </div>
+                    <div class="mt-4 inputs"><label>CMND</label>
+                        <p type="text" class="form-control" id="cmnd" name="name" >201458963</p>
+                    </div>
+                    <div class="mt-2 inputs">
+                        <label>Đồ thanh lý</label>
+                        <div class="text-center m-auto">
+                            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                                <b class="text-center">Chọn đồ thanh lý</b>
+                            </button>
+                        </div>
+                        <div class="justify-content-between mt-4">
+                            <div class="input-group">
+                                <p type="text" class="form-control text-center">honda ablade</p>
+                            </div>
+                            <div class="input-group">
+                                <p type="text" class="form-control text-center" >iphone X</p>
+                            </div>
+                            <div class="input-group">
+                                <p type="text" class="form-control text-center">apple watch</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2 inputs"><label>Tổng tiền</label>
+                        <p type="text" class="form-control" id="" name="birthday"
+                           min="1920-01-01">88.000.000VNĐ</p>
+                    </div>
+                    <div class="text-center mt-4 btn-group p-3 m-l-2">
+                        <div class="text-center" style="margin-left: 23%">
+                            <button type="button" class="btn btn-secondary ">
+                                <b class="text-center">Quay lại</b>
+                            </button>
+                        </div>
+                        <div class="text-center" style="margin-right: 23%">
+                            <button type="submit" class="btn btn-success">
+                                <b class="text-center">Thêm mới</b>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div style="background-color: #00833e; height: 5vw; text-align: center">
+        <h1 style="color: white">Footer</h1>
+    </div>
+</footer>
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title text-center" id="staticBackdropLabel" style="margin-left: 18vw">Chọn khách
+                    hàng</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="d-flex">
+                <div class="modal-body d-flex justify-content-between">
+                    <div class="">
+                        <button type="submit" class="btn btn-outline-success ">
+                            <b class="textcenter">Thêm khách hàng</b>
+                        </button>
+                    </div>
+                    <form class="d-flex m-1">
+                        <input style="width: 18vw;border-color: black"
+                               class="form-control me-3"
+                               type="text"
+                               name="ngayMua"
+                               placeholder="Tìm kiếm"
+                               aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="text-center">Tên khách hàng</th>
+                    <th class="text-center">SĐT</th>
+                    <th class="text-center">CMND</th>
+                    <th class="text-center">Số lượng HD</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-center">Nguyễn Đức Thắng</td>
+                    <td class="text-center">0905124562</td>
+                    <td class="text-center">203652485</td>
+                    <td class="text-center">4</td>
+                    <td class="text-center"><a href="" class="btn btn-success text-center">Chọn</a></td>
+                </tr>
+                <tr>
+                    <td class="text-center">Hồ viễn</td>
+                    <td class="text-center">0935454562</td>
+                    <td class="text-center">205265585</td>
+                    <td class="text-center">3</td>
+                    <td class="text-center"><a href="" class="btn btn-success text-center">Chọn</a></td>
+                </tr>
+                <tr>
+                    <td class="text-center">Nguyễn Trung Thiện</td>
+                    <td class="text-center">0956985742</td>
+                    <td class="text-center">203652485</td>
+                    <td class="text-center">4</td>
+                    <td class="text-center"><a href="" class="btn btn-success text-center">Chọn</a></td>
+                </tr>
+                <tr>
+                    <td class="text-center">Hồ Trường An</td>
+                    <td class="text-center">0926589562</td>
+                    <td class="text-center">201458485</td>
+                    <td class="text-center">4</td>
+                    <td class="text-center"><a href="" class="btn btn-success text-center">Chọn</a></td>
+                </tr>
+                <tr>
+                    <td class="text-center">Trương Quốc Hòa</td>
+                    <td class="text-center">0902541562</td>
+                    <td class="text-center">201524485</td>
+                    <td class="text-center">5</td>
+                    <td class="text-center"><a href="" class="btn btn-success text-center">Chọn</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="d-flex col-12 justify-content-end" style="margin-left: -5%">
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Trước</a>
+                        </li>
+                        <li class="page-item" aria-current="page"><a class="page-link active " href="#">1</a></li>
+                        <li class="page-item ">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Sau</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title text-center" id="staticBackdropLabel1" style="margin-left: 18vw">Chọn đồ thanh lý</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="d-flex">
+                <div class="modal-body d-flex justify-content-between">
+                    <div class="">
+                        <form action="">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="kh">Tên đồ</label>
+                                        <input style="border-color: black" id="kh" type="text" name="surname" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="doCam">Loại đồ</label>
+                                        <select style="border-color: black" id="doCam" type="text" name="name" class="form-control">
+                                            <option value="">--Chọn--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label >Giá</label>
+                                        <input style="border-color: black"  type="number" name="surname" class="form-control">
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-2" style="margin-top: 1.5vw">
+                                    <div class="form-group" >
+                                        <button type="button" class="btn btn-outline-primary "><i class="bi bi-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="text-center">Tên đồ</th>
+                    <th class="text-center">Loại đồ</th>
+                    <th class="text-center">Số lượng</th>
+                    <th class="text-center">Giá</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-center">Iphone X</td>
+                    <td class="text-center">Điện thoại</td>
+                    <td class="text-center">1</td>
+                    <td class="text-center">11.500.000 VNĐ</td>
+                    <td class="text-center"><a href="" class="btn btn-success text-center">Chọn</a></td>
+                </tr>
+                <tr>
+                    <td class="text-center">Apple Watch</td>
+                    <td class="text-center">Đồng hồ</td>
+                    <td class="text-center">1</td>
+                    <td class="text-center">8.300.000 VNĐ</td>
+                    <td class="text-center"><a href="" class="btn btn-success text-center">Chọn</a></td>
+                </tr>
+                <tr>
+                    <td class="text-center">Iphone 13</td>
+                    <td class="text-center">Điện thoại</td>
+                    <td class="text-center">1</td>
+                    <td class="text-center">25.500.000 VNĐ</td>
+                    <td class="text-center"><a href="" class="btn btn-success text-center">Chọn</a></td>
+                </tr>
+                <tr>
+                    <td class="text-center">Rolex</td>
+                    <td class="text-center">Đồng hồ</td>
+                    <td class="text-center">1</td>
+                    <td class="text-center">80.000.000 VNĐ</td>
+                    <td class="text-center"><a href="" class="btn btn-success text-center">Chọn</a></td>
+                </tr>
+                <tr>
+                    <td class="text-center">Macbook Air</td>
+                    <td class="text-center">Laptop</td>
+                    <td class="text-center">1</td>
+                    <td class="text-center">26.500.000 VNĐ</td>
+                    <td class="text-center"><a href="" class="btn btn-success text-center">Chọn</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="d-flex col-12 justify-content-end" style="margin-left: -5%">
+                <nav aria-label="..." >
+                    <ul class="pagination">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Trước</a>
+                        </li>
+                        <li class="page-item     " aria-current="page"><a class="page-link active" href="#">1</a></li>
+                        <li class="page-item ">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Sau</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+</html>
