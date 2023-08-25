@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kết quả thống kê</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div align="center" id="header">
+    <h1>Header</h1>
+</div>
+<div class="container">
+    <canvas id="myComparisonChart" width="500" height="500"></canvas>
+</div>
+
+<div style="text-align: center;margin-top: 5vh" >
+    <button class="btn" style="background:gray;margin-right: 20px;height: 5vh" >Quay lại</button>
+    <button class="btn" style="background: #daa32a;margin-left: 20px;height: 5vh">In báo cáo</button>
+</div>
+
+<div align="center" id="footer">
+    <h1>Footer</h1>
+</div>
+
+<script>
+    let ctx = document.getElementById('myComparisonChart').getContext('2d');
+    let myComparisonChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy','Chủ nhật'],
+            datasets: [
+                {
+                    label: 'Tuần 1: 20/07/2020-27/07/2020',
+                    data: [10, 20, 15, 30, 25, 40, 50],
+                    borderColor: '#FF6384',
+                    backgroundColor: '#FF6384',
+                    fill: false
+                },
+                {
+                    label: 'Tuần 2: 13/07/2020-20/07/2020',
+                    data: [15, 25, 20, 35, 30, 45, 55],
+                    borderColor: '#36A2EB',
+                    backgroundColor: '#36A2EB',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Thống kê doanh thu',
+                    font: {
+                        size: 50, // Kích thước font tiêu đề
+                    },
+                },
+                legend: {
+                    labels: {
+                        font: {
+                            size: 20 // Tùy chỉnh kích thước font của labels
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
