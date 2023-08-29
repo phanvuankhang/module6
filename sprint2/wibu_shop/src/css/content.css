@@ -1,0 +1,8 @@
+#hero {
+    /* Thêm các thuộc tính nền tại đây */
+    background-image: url('https://a-static.besthdwallpaper.com/dragon-ball-z-goku-power-wallpaper-2560x800-103389_59.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* Thêm các thuộc tính nền khác nếu cần */
+}
