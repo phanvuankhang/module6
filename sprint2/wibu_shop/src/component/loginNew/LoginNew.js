@@ -1,7 +1,7 @@
 import "./fonts/material-icon/css/material-design-iconic-font.min.css";
 import "../loginNew/css/style.css";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { toast, ToastContainer } from "react-toastify";
+import {ToastContainer } from "react-toastify";
 import React from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';

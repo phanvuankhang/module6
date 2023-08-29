@@ -1,7 +1,7 @@
 import { Carousel } from 'react-bootstrap';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 export function Details() {
 
   return (

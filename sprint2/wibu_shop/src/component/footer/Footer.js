@@ -1,9 +1,5 @@
-import { toast } from 'react-toastify'
 import '../../css/header.css';
 export function Footer() {
-  const clickMe = () => {
-    toast.success("Thask you so much")
-  }
     return(
         <>
   {/* ======= Contact Section ======= */}
@@ -120,7 +116,7 @@ export function Footer() {
               </div>
             </div>
             <div className="text-center">
-              <button type="submit" onClick={() => clickMe()}>Gửi tin nhắn</button>
+              <button type="submit" >Gửi tin nhắn</button>
             </div>
           </form>
         </div>
