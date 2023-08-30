@@ -26,17 +26,17 @@ export function Header() {
                 </NavLink>
               </li>
               <li style={{marginRight:"1vw"}}>
-                <a className="nav-link scrollto" href="#hero">
+                <a className="nav-link scrollto" href="#fan">
                   Sản Phẩm
                 </a>
               </li>
               <li style={{marginRight:"1vw"}}>
-                <a className="nav-link scrollto" href="#fan">
+                <a className="nav-link scrollto" href="">
                 Blogs
                 </a>
               </li>
               <li style={{marginRight:"15vw"}}>
-                <a className="nav-link scrollto " href="#ctservicecmsblock">
+                <a className="nav-link scrollto " href="">
                   Về Chúng Tôi
                 </a>
               </li>

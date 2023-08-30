@@ -105,7 +105,7 @@ export function LoginNew() {
                                                             Nam
                                                         </div>
                                                     </div>
-                                                    <div className="col-7">
+                                                    <div className="col-4">
                                                         <Field type="radio" name="gender" value="0" />
                                                         <div >
                                                             Nữ

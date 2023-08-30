@@ -31,25 +31,24 @@ export function Details() {
                     </div>
                     <div className="col-md-5">
                       <div className="full heading_s1">
-                        <h1 style={{ color: "#3498db" }}>Naruto</h1>
+                        <h1 style={{ color: "#3498db" }}>Mô hình nhân vật Naruto chibi 7cm</h1>
                         <br />
                         <p>
                           {/* {product.description} */}
 
                       </p>
                       <br />
-                      <p>Naruto</p>
+                      <p>Mô hình Naruto</p>
                       <p>Số lượng trong kho: 1</p>
                       <h3 style={{ color: "#3498db" }}>Giá: 10000 VNĐ</h3>
                       <div className="d-flex">
                         <p style={{ marginRight: "2%" }}>Số lượng:</p><div className="d-flex">
                           <button type="button" className="minus" ><span>-</span></button>
-                          <input value=""
+                          <input value="1"
                             className="input" min="0" max="" style={{padding:"0 0"}}/>
                           <button type="button" value="+" className="plus" ><span>+</span></button>
                         </div>
                       </div>
-
                     </div>
                     <div className="d-flex" style={{ marginTop: "5%" }}>
                       <div className="full" style={{ marginRight: "10%", marginLeft: "10%" }} title="Quay Lại">
@@ -59,13 +58,12 @@ export function Details() {
                       </div>
                       <div className="full">
 
-                        <Link  title='Add to Cart'>
+                        <Link  title='Thêm vào giỏ hàng'>
                           <AddShoppingCartIcon style={{ fontSize: "200%" }} />
                         </Link>
 
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>
