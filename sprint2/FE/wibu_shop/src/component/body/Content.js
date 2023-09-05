@@ -2,52 +2,62 @@ import ElectricRickshawIcon from '@mui/icons-material/ElectricRickshaw';
 import WifiCalling3Icon from '@mui/icons-material/WifiCalling3';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SettingsIcon from '@mui/icons-material/Settings';
-import {NavLink} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import '../../css/content.css';
-import {useEffect, useState} from "react";
-import {getAllProducstAPI} from "../../service/Service";
+import React, {useEffect, useState} from "react";
+import {getAllProductsAPI} from "../../service/ProductsService";
+import {toast} from 'react-toastify';
+
 
 export function Content() {
+    const navigate = useNavigate();
     const [productList, setProductList] = useState([]);
     const [page, setPage] = useState(0);
     const [totalPage, setTotalPage] = useState();
     const [type, setType] = useState("null");
 
-    const getProductList = async () => {
+    const getProductList = async (page = 0, type = "null") => {
         try {
-            const res = await getAllProducstAPI(page, type)
-            setProductList(res.data.content);
-            setTotalPage(res.data.totalPage);
-        } catch (e) {
-            console.log(e)
+            const res = await getAllProductsAPI(page, type)
+            setProductList(() => [...productList, ...res.data.content]);
+            setTotalPage(res.data.totalPages);
+        } catch (error) {
+            navigate('/error')
         }
     }
     const getAllProductType = async (page = 0, type = "null") => {
-        const res = await getAllProducstAPI(page, type)
+        const res = await getAllProductsAPI(page, type)
         setPage(0);
         setProductList(res.data.content);
-        setTotalPage(res.data.totalPage);
+        setTotalPage(res.data.totalPages);
     }
+
+
+    const loadMore = async () => {
+        await getProductList(page + 1, type)
+        setPage(page + 1);
+    }
+
     const onclickType = async (type) => {
         if (type == 0) {
             setType("null")
             getAllProductType()
         } else if (type == 1) {
             setType("Naruto")
-            getAllProducstAPI("Naruto")
+            getAllProductType("", "Naruto")
         } else if (type == 2) {
             setType("One piece")
-            getAllProductType("One piece")
+            getAllProductType("", "One piece")
         } else if (type == 3) {
             setType("Dragon ball")
-            getAllProductType("Dragon ball")
+            getAllProductType("", "Dragon ball")
         }
     }
 
-        useEffect(() => {
-            document.title = "Home";
-            getProductList();
-        }, [])
+    useEffect(() => {
+        document.title = "Home";
+        getProductList();
+    }, [])
 
     return (
         <>
@@ -62,7 +72,7 @@ export function Content() {
                                 Chúng tôi là nhà cung cấp mô hình xuất sắc giá rẻ và chất lượng.
                             </h2>
                             <div data-aos="fade-up" data-aos-delay={800}>
-                                <a href="#about" className="btn-get-started scrollto">
+                                <a href="#fan" className="btn-get-started scrollto">
                                     Bắt đầu
                                 </a>
                             </div>
@@ -121,18 +131,6 @@ export function Content() {
                         <div className="row" data-aos="fade-up" data-aos-delay={200}>
                             <div className="col-lg-12 d-flex justify-content-center">
                                 <ul id="portfolio-flters">
-                                    {/* <li data-filter="*" className="filter-app">
-                    <NavLink to="/#all" style={({isActive}) => {
-                      return{
-                        backgroundColor : isActive? "#3498db":"",
-                        color : isActive? "white" :""
-                      }
-                    }}>All</NavLink>
-                    
-                  </li>
-                  <li data-filter=".filter-app">Steam fan</li>
-                  <li data-filter=".filter-card">Standing fan</li>
-                  <li data-filter=".filter-web">Wall fan</li> */}
                                     <li onClick={() => onclickType(0)}>Tất cả</li>
                                     <li onClick={() => onclickType(1)}>Naruto</li>
                                     <li onClick={() => onclickType(2)}>One piece</li>
@@ -146,49 +144,48 @@ export function Content() {
                             data-aos-delay={400}
                         >
                             {
-                                productList.map((p,index)=>(
-                                <div className="col-lg-3 col-md-6 portfolio-item filter-app">
-                                    <div className="portfolio-wrap">
-                                        <img
-                                            src={p.image}
-                                            className="img-fluid"
-                                            alt=""
-                                        />
-                                        <div className="portfolio-info">
-                                            <h4>{p.name}</h4>
-                                            <h3 style={{color: "white"}}>{p.price} VNĐ</h3>
-                                            <p>{p.productType.name}</p>
+                                productList.map((p) => (
 
-                                            {p.quantity<1?
-                                                <h4 style={{color: "red"}}>Hết hàng</h4> :
-                                                <></>
-                                            }
 
-                                            <div className="portfolio-links">
-                                                <a
-                                                    href="https://khomohinh.com/wp-content/uploads/2023/07/mo-hinh-luffy-wano-gear-4-gomu-50-cm-khong-lo-2-400x400.jpg  "
-                                                    data-gallery="portfolioGallery"
-                                                    className="portfolio-lightbox"
-                                                    title="App 1"
-                                                >
-                                                    <i className="bx bx-plus"/>
-                                                </a>
-                                                <a title="Add to Cart">
-                                                    <i className="bi bi-plus"/>
-                                                </a>
-                                                <NavLink to={`/details`} title="More Details">
-                                                    <i className="bi bi-link-45deg"/>
-                                                </NavLink>
+                                    <div className="col-lg-3 col-md-6 portfolio-item filter-app">
+                                        <div className="portfolio-wrap">
+                                            <img
+                                                src={p.image}
+                                                className="img-fluid"
+                                                alt=""
+                                            />
+
+                                            <div className="portfolio-info">
+                                                <NavLink to={`/details/${p.id}`} title="Thông tin chi tiết">
+
+                                                <h4>{p.name}</h4>
+                                                <h3 style={{color: "white"}}>{p.price} VNĐ</h3>
+                                                <p>{p.productType.name}</p>
+                                            </NavLink>
+                                                {p.quantity < 1 ?
+                                                    <h4 style={{color: "red"}}>Hết hàng</h4> :
+                                                    ""
+                                                }
+                                                <div className="portfolio-links">
+
+                                                    <a title="Thêm vào giỏ hàng">
+                                                        <i className="bi bi-cart-plus"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 ))
                             }
                         </div>
 
-                        <button className="load-more-button">Tải thêm</button>
 
+                        {
+                            page < totalPage - 1 ? (
+                                <button onClick={() => loadMore()} className="load-more-button">Tải thêm</button>
+
+                            ) : ""
+                        }
 
                     </div>
                 </section>

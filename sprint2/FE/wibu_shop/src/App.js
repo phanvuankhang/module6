@@ -8,6 +8,7 @@ import {Login} from "./component/login/Login";
 import {LoginNew} from "./component/loginNew/LoginNew";
 import {Details} from "./component/body/Details";
 import {ShoppingCart} from "./component/body/ShoppingCart";
+import {ErrorAll} from "./component/body/ErrorAll";
 
 
 function App() {
@@ -18,8 +19,9 @@ function App() {
                 <Route path="/" element={<Content/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<LoginNew/>}/>
-                <Route path="/details" element={<Details/>}/>
+                <Route path="/details/:id" element={<Details/>}/>
                 <Route path="/cart" element={<ShoppingCart/>}/>
+                <Route path="/error" element={<ErrorAll/>}/>
             </Routes>
             <Footer/>
         </>

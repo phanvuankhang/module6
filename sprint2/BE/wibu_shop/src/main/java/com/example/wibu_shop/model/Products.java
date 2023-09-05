@@ -19,7 +19,7 @@ public class Products {
     private Integer quantity;
     @Column(name = "is_delete", columnDefinition = "BIT DEFAULT 0")
     private boolean isDelete;
-    @Column(name = "description",columnDefinition = "TEXT")
+    @Column(name = "description",length = 1000)
     private String description;
     @CreationTimestamp
     @Column(name = "create_date", columnDefinition = "DATETIME DEFAULT now()", updatable = false)
@@ -110,14 +110,6 @@ public class Products {
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
-    }
-
-    public ProductType getTypeProduct() {
-        return productType;
-    }
-
-    public void setTypeProduct(ProductType productType) {
-        this.productType = productType;
     }
 
     public ProductType getProductType() {

@@ -36,7 +36,7 @@ export function Header() {
                 </a>
               </li>
               <li style={{marginRight:"15vw"}}>
-                <a className="nav-link scrollto " href="">
+                <a className="nav-link scrollto " href="#">
                   Về Chúng Tôi
                 </a>
               </li>
@@ -47,28 +47,28 @@ export function Header() {
               }}>
 
 
-                    <>
-                      <Dropdown
-                        className="nav-info-user">
-                        <DropdownToggle
-                          style={{
-                            fontSize: "120%",
-                          }}
-                          className="nav-link btn-light"
-                        >
-                          <i class="bi bi-person" style={{ fontSize: '120%', }}></i>
-                        </DropdownToggle>
-                        <DropdownMenu className="abc">
-                        <Link to="/info" className="dropdown-item "
-                            ><i class="bi bi-info-square" style={{fontSize:"110%"}}> Information</i></Link>
-                          <Link to="/history" className="dropdown-item "
-                            ><i class="bi bi-card-list" style={{fontSize:"110%"}}> Payment history</i></Link>
-                          <Link className="dropdown-item "
-                            to='/login'><i class="bi bi-box-arrow-in-right" style={{fontSize:"120%"}} >   Thoát</i></Link>
-                        </DropdownMenu>
-                      </Dropdown>
-                   
-                    </>
+                    {/*<>*/}
+                    {/*  <Dropdown*/}
+                    {/*    className="nav-info-user">*/}
+                    {/*    <DropdownToggle*/}
+                    {/*      style={{*/}
+                    {/*        fontSize: "120%",*/}
+                    {/*      }}*/}
+                    {/*      className="nav-link btn-light"*/}
+                    {/*    >*/}
+                    {/*      <i class="bi bi-person" style={{ fontSize: '120%', }}></i>*/}
+                    {/*    </DropdownToggle>*/}
+                    {/*    <DropdownMenu className="abc">*/}
+                    {/*    <Link to="/info" className="dropdown-item "*/}
+                    {/*        ><i class="bi bi-info-square" style={{fontSize:"110%"}}> Information</i></Link>*/}
+                    {/*      <Link to="/history" className="dropdown-item "*/}
+                    {/*        ><i class="bi bi-card-list" style={{fontSize:"110%"}}> Payment history</i></Link>*/}
+                    {/*      <Link className="dropdown-item "*/}
+                    {/*        to='/login'><i class="bi bi-box-arrow-in-right" style={{fontSize:"120%"}} >   Thoát</i></Link>*/}
+                    {/*    </DropdownMenu>*/}
+                    {/*  </Dropdown>*/}
+
+                    {/*</>*/}
 
                     <>
                       <NavLink to="/login" className='font-a-header '
