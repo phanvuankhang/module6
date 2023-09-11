@@ -52,12 +52,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (jwtTokenUtil.validateToken(jwtToken, jwtUserDetails)) {
                 UsernamePasswordAuthenticationToken  authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));// Đặt thông tin xác thực chi tiết (ví dụ: địa chỉ IP, User-Agent, ...) vào authenticationToken.
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);//Khi xác thực thành công, Spring Security sẽ sử dụng authenticationToken để đánh dấu người dùng đã được xác thực, và từ đó cho phép truy cập vào các tài nguyên bảo mật.
             }
         }
-
+        // Gọi chain.doFilter để tiếp tục yêu cầu và phản hồi qua các filter còn lại
         chain.doFilter(request, response);
+        // Thực hiện các tác vụ xử lý hoặc kiểm tra sau khi đi qua các filter khác hoặc servlet
     }
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

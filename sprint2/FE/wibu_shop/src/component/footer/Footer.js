@@ -44,9 +44,9 @@ export function Footer() {
             <div>
               <i className="ri-map-pin-line" />
               <p>
-                A108 Trần Hưng Đạo
+                280 Đ. Trần Hưng Đạo, An Hải Tây,
                 <br />
-                Đà Nãng, DN 535022
+                Sơn Trà, Đà Nẵng 550000, Vietnam
               </p>
             </div>
             <div>
@@ -55,7 +55,7 @@ export function Footer() {
             </div>
             <div>
               <i className="ri-phone-line" />
-              <p>+84222222222</p>
+              <p>+0345 678 678</p>
             </div>
           </div>
         </div>

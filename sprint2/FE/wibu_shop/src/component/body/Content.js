@@ -6,7 +6,8 @@ import {NavLink, useNavigate} from 'react-router-dom';
 import '../../css/content.css';
 import React, {useEffect, useState} from "react";
 import {getAllProductsAPI} from "../../service/ProductsService";
-import {toast} from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
+import {createShoppingCartAPI} from "../../service/ShoppingCartService";
 
 
 export function Content() {
@@ -15,6 +16,8 @@ export function Content() {
     const [page, setPage] = useState(0);
     const [totalPage, setTotalPage] = useState();
     const [type, setType] = useState("null");
+    const role = localStorage.getItem('role');
+
 
     const getProductList = async (page = 0, type = "null") => {
         try {
@@ -54,8 +57,11 @@ export function Content() {
         }
     }
 
+    const addCart = async (id) => {
+        await createShoppingCartAPI(id, 1)
+        toast.success("Thêm vào giỏ hàng thành công!!")
+    }
     useEffect(() => {
-        document.title = "Home";
         getProductList();
     }, [])
 
@@ -158,20 +164,33 @@ export function Content() {
                                             <div className="portfolio-info">
                                                 <NavLink to={`/details/${p.id}`} title="Thông tin chi tiết">
 
-                                                <h4>{p.name}</h4>
-                                                <h3 style={{color: "white"}}>{p.price} VNĐ</h3>
-                                                <p>{p.productType.name}</p>
-                                            </NavLink>
-                                                {p.quantity < 1 ?
-                                                    <h4 style={{color: "red"}}>Hết hàng</h4> :
-                                                    ""
-                                                }
-                                                <div className="portfolio-links">
+                                                    <h4 style={{fontSize: "15px"}}>{p.name}</h4>
+                                                    <h3 style={{
+                                                        color: "white",
+                                                        fontSize: "20px"
+                                                    }}>{(+p.price).toLocaleString()} VNĐ</h3>
+                                                    <p>{p.productType.name}</p>
+                                                </NavLink>
+                                                {role && role === "ROLE_ADMIN" ?
+                                                    "" :
+                                                    <>
+                                                        {p.quantity >= 1 ?
+                                                            <div className="portfolio-links">
 
-                                                    <a title="Thêm vào giỏ hàng">
-                                                        <i className="bi bi-cart-plus"></i>
-                                                    </a>
-                                                </div>
+                                                                <a onClick={() => addCart(p)} title="Thêm vào giỏ hàng">
+                                                                    <i className="bi bi-cart-plus"></i>
+                                                                </a>
+                                                            </div> : ""
+                                                        }
+                                                    </>
+                                                }
+
+                                                {
+                                                    p.quantity < 1 ?
+                                                        <h4 style={{color: "red", fontSize: "15px"}}>Hết hàng</h4> :
+                                                        ""
+                                                }
+
                                             </div>
                                         </div>
                                     </div>
@@ -193,7 +212,7 @@ export function Content() {
             </main>
             {/* End #main */}
 
-
+<ToastContainer/>
         </>
 
     )

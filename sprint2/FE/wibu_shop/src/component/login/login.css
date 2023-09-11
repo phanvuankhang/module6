@@ -127,3 +127,42 @@ list-style: none;
     border-radius: 50%;
     left: -37px;
 }
+input[type="checkbox"] {
+    display: none;
+}
+
+/*!* Thiết lập kiểu label cho checkbox *!*/
+.myCheckbox {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 25px;
+    margin-right: 15px;
+    font-size: 14px;
+    user-select: none;
+}
+
+/* Thiết lập kiểu checkbox được chọn */
+label#dn:before {
+    content: "";
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 8px;
+    position: absolute;
+    left: 0;
+    bottom: 4px;
+    background-color: #fff;
+    border: 1px solid;
+    border-radius: 5px;
+
+}
+
+/* Thiết lập kiểu checkbox được chọn */
+input[type="checkbox"]:checked + label#dn:before {
+    content: "\2713";
+    color: rgb(6, 133, 170);
+    text-align: center;
+    line-height: 15px;
+
+}

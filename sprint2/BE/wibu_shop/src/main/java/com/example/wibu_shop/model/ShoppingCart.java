@@ -9,21 +9,31 @@ public class ShoppingCart {
     private Long id;
     @Column(name = "quantity",nullable = false)
     private Integer quantity;
+    @Column(name = "price",nullable = false)
+    private Long price;
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Products products;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customers customers;
-
     public ShoppingCart() {
     }
 
-    public ShoppingCart(Long id, Integer quantity, Products products, Customers customers) {
+    public ShoppingCart(Long id, Integer quantity, Long price, Products products, Customers customers) {
         this.id = id;
         this.quantity = quantity;
+        this.price = price;
         this.products = products;
         this.customers = customers;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 
     public Long getId() {

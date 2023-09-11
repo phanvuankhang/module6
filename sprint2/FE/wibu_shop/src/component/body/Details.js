@@ -1,11 +1,12 @@
-import {Carousel} from 'react-bootstrap';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 import Carousel1 from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import {Link} from 'react-router-dom';
 import {useNavigate, useParams} from "react-router";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {getAllProductsAPI, getDetailProductAPI, getImagesProductAPI} from "../../service/ProductsService";
 
 export function Details() {
@@ -17,18 +18,19 @@ export function Details() {
     const [productType, setProductType] = useState({});
     const [productList, setProductList] = useState([]);
     const [quantity, setQuantity] = useState(1)
+    const role = localStorage.getItem('role');
 
     const responsive = {
         desktop: {
-                breakpoint: { max: 3000, min: 1024 },
+            breakpoint: {max: 3000, min: 1024},
             items: 4
         },
         tablet: {
-            breakpoint: { max: 1024, min: 464 },
+            breakpoint: {max: 1024, min: 464},
             items: 2
         },
         mobile: {
-            breakpoint: { max: 464, min: 0 },
+            breakpoint: {max: 464, min: 0},
             items: 1
         }
     };
@@ -79,12 +81,10 @@ export function Details() {
         }
     }
     useEffect(() => {
-        document.title = "Detail";
+        document.title = "Chi tiết sản phẩm";
         getAllProducts();
     }, [])
-    if (!product) {
-        return null
-    }
+
     return (
         <>
             <main id="main" style={{marginTop: "20vh"}}>
@@ -96,10 +96,9 @@ export function Details() {
                                     <div className="row">
                                         <div className="col-md-7 p-relative r-left">
                                             <div className="full back_blog text_align_center padding_right_left_15">
-                                                <Carousel>
+                                                <Carousel autoPlay={true} infinite={true} au>
 
                                                     {images.map((i) => (
-                                                        <Carousel.Item>
                                                             <img
                                                                 className="d-block "
                                                                 src={i.image}
@@ -107,10 +106,9 @@ export function Details() {
                                                                 style={{
                                                                     width: "80%",
                                                                     marginLeft: "10%",
-                                                                    height: "500px"
+                                                                    height: "auto",
                                                                 }}
                                                             />
-                                                        </Carousel.Item>
                                                     ))}
                                                 </Carousel>
                                             </div>
@@ -128,18 +126,35 @@ export function Details() {
                                                 </p>
                                                 <br/>
                                                 <p>Loại mô hình: {productType.name}</p>
-                                                <p>Số lượng trong kho: {product.quantity}</p>
-                                                <h3 style={{color: "#3498db"}}>Giá: {product.price}</h3>
+                                                {product.quantity < 1 ?
+                                                    <h4 style={{color: "red"}}>Hết hàng</h4> :
+                                                    <p>Số lượng trong kho: <b>{product.quantity}</b></p>
+                                                }
+                                                <h3 style={{color: "#3498db"}}>Giá: {(+product.price).toLocaleString()} VNĐ</h3>
                                                 <div className="d-flex">
-                                                    <p style={{marginRight: "2%"}}>Số lượng:</p>
-                                                    <div className="d-flex">
-                                                        <button type="button" className="minus"><span>-</span></button>
-                                                        <input value="1"
-                                                               className="input" min="0" max=""
-                                                               style={{padding: "0 0"}}/>
-                                                        <button type="button" value="+" className="plus"><span>+</span>
-                                                        </button>
-                                                    </div>
+                                                    {role && role === "ROLE_ADMIN" ?
+                                                        "" :
+                                                        <>
+                                                            {product.quantity < 1 ?
+                                                                "" :
+                                                                <>
+                                                                    <p style={{marginRight: "2%"}}>Số lượng:</p>
+                                                                    <div className="d-flex">
+                                                                        <button type="button" className="minus">
+                                                                            <span>-</span>
+                                                                        </button>
+                                                                        <input value="1"
+                                                                               className="input" min="0" max=""
+                                                                               style={{padding: "0 0"}}/>
+                                                                        <button type="button" value="+"
+                                                                                className="plus">
+                                                                            <span>+</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </>
+                                                            }
+                                                        </>
+                                                    }
                                                 </div>
                                             </div>
                                             <div className="d-flex" style={{marginTop: "5%"}}>
@@ -150,11 +165,17 @@ export function Details() {
                                                     </Link>
                                                 </div>
                                                 <div className="full">
-
-                                                    <Link title='Thêm vào giỏ hàng'>
-                                                        <AddShoppingCartIcon style={{fontSize: "200%"}}/>
-                                                    </Link>
-
+                                                    {role && role === "ROLE_ADMIN" ?
+                                                        "" :
+                                                        <>
+                                                            {product.quantity < 1 ?
+                                                                "" :
+                                                                <Link title='Thêm vào giỏ hàng'>
+                                                                    <AddShoppingCartIcon style={{fontSize: "200%"}}/>
+                                                                </Link>
+                                                            }
+                                                        </>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -170,37 +191,37 @@ export function Details() {
                         <div className="section-title" data-aos="fade-up">
                             <h2>Sản phẩm khác</h2>
                         </div>
-                        <Carousel1  responsive={responsive}  autoPlay
-                                    autoPlaySpeed={5000}
-                                    infinite>
-                            {productList.map((p,index) => (
+                        <Carousel1 responsive={responsive} autoPlay
+                                   autoPlaySpeed={5000}
+                                   infinite>
+                            {productList.map((p, index) => (
 
                                 <a onClick={() => reload(p.id)} title="More Details">
-                                        <div className="col-lg-11 col-md-6 portfolio-item filter-web">
-                                            <div className="portfolio-wrap">
-                                                <img
-                                                    src={p.image}
-                                                    className="img-fluid"
-                                                    alt=""
-                                                />
-                                                <div className="portfolio-info">
-                                                    <h4>{p.name}</h4>
-                                                    <p>{p.productType.name}</p>
-                                                    <div className="portfolio-links">
-                                                        <a
-                                                            href="https://khomohinh.com/wp-content/uploads/2022/09/mo-hinh-nhan-vat-naruto-chibi-7cm-3-400x400.jpg"
-                                                            data-gallery="portfolioGallery"
-                                                            className="portfolio-lightbox"
-                                                            title="Web 3"
-                                                        >
-                                                            <i className="bx bx-plus"/>
-                                                        </a>
+                                    <div className="col-lg-11 col-md-6 portfolio-item filter-web">
+                                        <div className="portfolio-wrap">
+                                            <img
+                                                src={p.image}
+                                                className="img-fluid"
+                                                alt=""
+                                            />
+                                            <div className="portfolio-info">
+                                                <h4>{p.name}</h4>
+                                                <p>{p.productType.name}</p>
+                                                <div className="portfolio-links">
+                                                    <a
+                                                        href="https://khomohinh.com/wp-content/uploads/2022/09/mo-hinh-nhan-vat-naruto-chibi-7cm-3-400x400.jpg"
+                                                        data-gallery="portfolioGallery"
+                                                        className="portfolio-lightbox"
+                                                        title="Web 3"
+                                                    >
+                                                        <i className="bx bx-plus"/>
+                                                    </a>
 
 
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                 </a>
                             ))}
                         </Carousel1>

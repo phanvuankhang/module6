@@ -11,9 +11,8 @@ public class Users {
     private String username;
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
-    @Column(name = "verifyCode", nullable = false, columnDefinition = "VARCHAR(5)")
+    @Column(name = "verifyCode", columnDefinition = "VARCHAR(5)")
     private Integer verifyCode;
-    ;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Roles roles;

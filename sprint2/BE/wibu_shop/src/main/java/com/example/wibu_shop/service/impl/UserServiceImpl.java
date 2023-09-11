@@ -30,6 +30,11 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
+    public Users findById(Long id) {
+        return userRepository.findById(id).get();
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users users = userRepository.findByUsername(username);
         if (users == null) {

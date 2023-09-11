@@ -1,6 +1,5 @@
 package com.example.wibu_shop.service.impl;
 
-import com.example.wibu_shop.dto.IProductDTO;
 import com.example.wibu_shop.model.Products;
 import com.example.wibu_shop.repository.IProductRepository;
 import com.example.wibu_shop.service.IProductService;
@@ -15,7 +14,7 @@ public class ProductServiceImpl implements IProductService {
     private IProductRepository productRepository;
 
     @Override
-    public Page<IProductDTO> getAll(Pageable pageable, String name) {
+    public Page<Products> getAll(Pageable pageable, String name) {
         if (name.equals("null")) {
             return productRepository.getAll(pageable, "");
         }

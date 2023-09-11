@@ -2,9 +2,12 @@ package com.example.wibu_shop.controller;
 
 import com.example.wibu_shop.config.JwtTokenUtil;
 import com.example.wibu_shop.config.JwtUserDetails;
+import com.example.wibu_shop.model.Customers;
+import com.example.wibu_shop.model.ShoppingCart;
 import com.example.wibu_shop.reponse.JwtRequest;
 import com.example.wibu_shop.reponse.JwtResponse;
-import com.example.wibu_shop.repository.IUserRepository;
+import com.example.wibu_shop.service.ICustomerService;
+import com.example.wibu_shop.service.IShoppingCartService;
 import com.example.wibu_shop.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,10 +22,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+
 
 @RequestMapping("/api/users")
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = {"http://localhost:3000"}, allowedHeaders = "*", allowCredentials = "true", maxAge = 3600)
 public class UsersController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -30,6 +35,10 @@ public class UsersController {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private ICustomerService customerService;
+    @Autowired
+    private IShoppingCartService shoppingCartService;
 
     class ErrorInfo {
         private String error;
@@ -49,8 +58,21 @@ public class UsersController {
             JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
             GrantedAuthority authority = principal.getAuthorities().stream().findFirst().orElse(null);
             final String token = jwtTokenUtil.generateToken(principal.getUsername());
-            return ResponseEntity.ok(new JwtResponse(token, principal.getUsername(), authority != null ? authority.getAuthority() : null));
+            HttpSession session = httpServletRequest.getSession();
+            if (session.getAttribute("cart") != null) {
+                List<ShoppingCart> shoppingCartList = (List<ShoppingCart>) session.getAttribute("cart");
+                Customers customers = customerService.getCustomer(principal.getUsername());
+                try {
 
+                } catch (Exception e) {
+                    throw e;
+                }
+                for (int i = 0; i < shoppingCartList.size(); i++) {
+                    shoppingCartService.createCart(shoppingCartList.get(i).getProducts(), customers, shoppingCartList.get(i).getQuantity());
+                }
+                session.removeAttribute("cart");
+            }
+            return ResponseEntity.ok(new JwtResponse(token, principal.getUsername(), authority != null ? authority.getAuthority() : null));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Đăng nhập thất bại!");
         }

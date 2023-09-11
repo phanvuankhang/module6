@@ -1,6 +1,5 @@
 package com.example.wibu_shop.controller;
 
-import com.example.wibu_shop.dto.IProductDTO;
 import com.example.wibu_shop.model.Products;
 import com.example.wibu_shop.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class ProductController {
     private IProductService productService;
 
     @GetMapping("")
-    public ResponseEntity<Page<IProductDTO>> getAllProduct(@RequestParam(value = "name", defaultValue = "null") String name,
+    public ResponseEntity<Page<Products>> getAllProduct(@RequestParam(value = "name", defaultValue = "null") String name,
                                                            @RequestParam(value = "page", defaultValue = "0") Integer page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "create_date");
         Pageable pageable = PageRequest.of(page, 8, sort);
