@@ -1,5 +1,5 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from 'react-responsive-carousel';
+import {Carousel} from 'react-responsive-carousel';
 import Carousel1 from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -8,6 +8,8 @@ import {Link} from 'react-router-dom';
 import {useNavigate, useParams} from "react-router";
 import React, {useEffect, useState} from "react";
 import {getAllProductsAPI, getDetailProductAPI, getImagesProductAPI} from "../../service/ProductsService";
+import {createShoppingCartAPI} from "../../service/ShoppingCartService";
+import { toast} from "react-toastify";
 
 export function Details() {
     const navigate = useNavigate();
@@ -55,6 +57,11 @@ export function Details() {
         window.location.reload()
     }
 
+    const addCart = async () => {
+        await createShoppingCartAPI(product, quantity)
+        toast.success(`Thêm ${quantity} sản phẩm ${product.name} vào giỏ hàng thành công!!`)
+        navigate("/")
+    }
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -83,6 +90,7 @@ export function Details() {
     useEffect(() => {
         document.title = "Chi tiết sản phẩm";
         getAllProducts();
+        window.scrollTo(0, 0)
     }, [])
 
     return (
@@ -96,19 +104,19 @@ export function Details() {
                                     <div className="row">
                                         <div className="col-md-7 p-relative r-left">
                                             <div className="full back_blog text_align_center padding_right_left_15">
-                                                <Carousel autoPlay={true} infinite={true} au>
+                                                <Carousel interval={5000} infiniteLoop={true} autoPlay={true}  showArrows={false}  showStatus={false}>
 
                                                     {images.map((i) => (
-                                                            <img
-                                                                className="d-block "
-                                                                src={i.image}
-                                                                alt="First slide"
-                                                                style={{
-                                                                    width: "80%",
-                                                                    marginLeft: "10%",
-                                                                    height: "auto",
-                                                                }}
-                                                            />
+                                                        <img
+                                                            className="d-block "
+                                                            src={i.image}
+                                                            alt="First slide"
+                                                            style={{
+                                                                width: "80%",
+                                                                marginLeft: "10%",
+                                                                height: "auto",
+                                                            }}
+                                                        />
                                                     ))}
                                                 </Carousel>
                                             </div>
@@ -140,13 +148,16 @@ export function Details() {
                                                                 <>
                                                                     <p style={{marginRight: "2%"}}>Số lượng:</p>
                                                                     <div className="d-flex">
-                                                                        <button type="button" className="minus">
+                                                                        <button onClick={() => editQuantity(0)}
+                                                                                type="button" className="minus">
                                                                             <span>-</span>
                                                                         </button>
-                                                                        <input value="1"
-                                                                               className="input" min="0" max=""
+                                                                        <input value={quantity}
+                                                                               className="input" min="0"
+                                                                               max={product.quantity}
                                                                                style={{padding: "0 0"}}/>
-                                                                        <button type="button" value="+"
+                                                                        <button onClick={() => editQuantity(1)}
+                                                                                type="button" value="+"
                                                                                 className="plus">
                                                                             <span>+</span>
                                                                         </button>
@@ -170,7 +181,8 @@ export function Details() {
                                                         <>
                                                             {product.quantity < 1 ?
                                                                 "" :
-                                                                <Link title='Thêm vào giỏ hàng'>
+                                                                <Link onClick={() => addCart()}
+                                                                      title='Thêm vào giỏ hàng'>
                                                                     <AddShoppingCartIcon style={{fontSize: "200%"}}/>
                                                                 </Link>
                                                             }
@@ -231,6 +243,5 @@ export function Details() {
             </main>
             {/* End #main */}
         </>
-
     )
 }

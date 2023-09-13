@@ -8,15 +8,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface IProductRepository extends JpaRepository<Products, Long> {
-    @Query(value = "select p.id,p.name,p.price,p.quantity,p.description  ,p.product_type_id,p.create_date,p.update_date,p.is_delete,\n" +
-            "       i.image       as image\n" +
-            "from products p\n" +
-            "         inner join images i on p.id = i.product_id\n" +
-            "         inner join product_type pt on p.product_type_id = pt.id\n" +
-            "where p.is_delete = false\n" +
-            "  and pt.name like concat('%', :name, '%')\n" +
-            "  AND i.id IN (select min(i.id)\n" +
-            "               from images i\n" +
-            "               group by i.product_id)", nativeQuery = true)
+    @Query(value = "select p.id,\n" +
+            "       p.name,\n" +
+            "       p.price,\n" +
+            "       p.quantity,\n" +
+            "       p.description,\n" +
+            "       p.image,\n" +
+            "       p.product_type_id,\n" +
+            "       p.create_date,\n" +
+            "       p.update_date,\n" +
+            "       p.is_delete\n" +
+            "from products as p\n" +
+            "         inner join product_type as t on t.id = p.product_type_id\n" +
+            "where t.name like concat('%', :name, '%')\n" +
+            "  and p.is_delete = false", nativeQuery = true)
     Page<Products> getAll(Pageable pageable, @Param("name")String name);
 }

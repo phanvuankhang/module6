@@ -10,6 +10,7 @@ import {Details} from "./component/body/Details";
 import {ShoppingCart} from "./component/body/ShoppingCart";
 import {ErrorAll} from "./component/body/ErrorAll";
 import {AboutUs} from "./component/body/AboutUs";
+import {History} from "./component/body/History";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/cart" element={<ShoppingCart/>}/>
                 <Route path="/error" element={<ErrorAll/>}/>
                 <Route path="/about" element={<AboutUs/>}/>
+                <Route path="/history" element={<History/>}/>
             </Routes>
             <Footer/>
         </>

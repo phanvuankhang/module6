@@ -37,4 +37,29 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
             shoppingCartRepository.save(shoppingCart);
         }
     }
+
+    @Override
+    public void deleteCart(Long id) {
+        shoppingCartRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByCustomer(Customers customers) {
+        shoppingCartRepository.deleteByCustomer(customers.getId());
+    }
+
+    @Override
+    public void setCart(Integer index, Long id) {
+        ShoppingCart shoppingCart = shoppingCartRepository.findById(id).get();
+        if (index == 0) {
+            shoppingCart.setPrice(shoppingCart.getProducts().getPrice() * (shoppingCart.getQuantity() - 1));
+            shoppingCart.setQuantity(shoppingCart.getQuantity() - 1);
+            shoppingCartRepository.save(shoppingCart);
+        } else {
+            shoppingCart.setPrice(shoppingCart.getProducts().getPrice() * (shoppingCart.getQuantity() + 1));
+            shoppingCart.setQuantity(shoppingCart.getQuantity() + 1);
+            shoppingCartRepository.save(shoppingCart);
+        }
+    }
+
 }

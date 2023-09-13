@@ -197,7 +197,7 @@ body {
   font-size: 13px;
   line-height: 1.8;
   color: #222;
-  background: #f8f8f8;
+  background: #cad0da5e;
   font-weight: 400;
   /* font-family: Poppins;  */
 }
@@ -593,3 +593,7 @@ label.valid {
     margin-bottom: 10px; } }
 
 /*# sourceMappingURL=style.css.map */
+#portfolio-flters li.active {
+  background-color: #3498db; /* Màu nền mục được kích hoạt (ví dụ: màu xanh) */
+  color: #fff; /* Màu chữ của mục được kích hoạt */
+}

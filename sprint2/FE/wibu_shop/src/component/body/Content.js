@@ -6,7 +6,7 @@ import {NavLink, useNavigate} from 'react-router-dom';
 import '../../css/content.css';
 import React, {useEffect, useState} from "react";
 import {getAllProductsAPI} from "../../service/ProductsService";
-import { ToastContainer, toast } from "react-toastify";
+import {ToastContainer, toast} from "react-toastify";
 import {createShoppingCartAPI} from "../../service/ShoppingCartService";
 
 
@@ -55,6 +55,16 @@ export function Content() {
             setType("Dragon ball")
             getAllProductType("", "Dragon ball")
         }
+
+        const filters = document.querySelectorAll('#portfolio-flters li');
+        filters.forEach(filter => {
+            filter.classList.remove('active');
+        });
+
+        // Thêm lớp 'active' cho mục được chọn
+        const selectedFilter = document.querySelector(`#portfolio-flters li:nth-child(${type + 1})`);
+        selectedFilter.classList.add('active');
+
     }
 
     const addCart = async (id) => {
@@ -63,6 +73,7 @@ export function Content() {
     }
     useEffect(() => {
         getProductList();
+        window.scrollTo(0, 0)
     }, [])
 
     return (
@@ -137,7 +148,7 @@ export function Content() {
                         <div className="row" data-aos="fade-up" data-aos-delay={200}>
                             <div className="col-lg-12 d-flex justify-content-center">
                                 <ul id="portfolio-flters">
-                                    <li onClick={() => onclickType(0)}>Tất cả</li>
+                                    <li onClick={() => onclickType(0)} className="active">Tất cả</li>
                                     <li onClick={() => onclickType(1)}>Naruto</li>
                                     <li onClick={() => onclickType(2)}>One piece</li>
                                     <li onClick={() => onclickType(3)}>Dragon ball</li>
@@ -156,7 +167,7 @@ export function Content() {
                                     <div className="col-lg-3 col-md-6 portfolio-item filter-app">
                                         <div className="portfolio-wrap">
                                             <img
-                                                src={p.image}
+                                                src={p?.image}
                                                 className="img-fluid"
                                                 alt=""
                                             />
@@ -212,8 +223,8 @@ export function Content() {
             </main>
             {/* End #main */}
 
-<ToastContainer/>
+            <ToastContainer/>
         </>
 
-    )
+)
 }

@@ -48,6 +48,14 @@ public class Products {
         this.image = image;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public Long getId() {
         return id;
     }
@@ -120,11 +128,4 @@ public class Products {
         this.productType = productType;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 }

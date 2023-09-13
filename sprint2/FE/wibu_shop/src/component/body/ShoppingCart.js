@@ -1,21 +1,26 @@
 import {Link} from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React, {useEffect, useState} from "react";
-import {getShoppingCartAPI} from "../../service/ShoppingCartService";
-import {toast} from 'react-toastify';
+import {deleteShoppingCartAPI, getShoppingCartAPI, setShoppingCartAPI} from "../../service/ShoppingCartService";
+import {ToastContainer,toast} from 'react-toastify';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
+import Swal from "sweetalert2";
+import {createOrderAPI} from "../../service/OrderService";
+import {PayPalButton} from "react-paypal-button-v2";
 
 
 export function ShoppingCart() {
     const [shoppingCart, setShoppingCart] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0)
     const [totalQuantity, setTotalQuantity] = useState(0)
+    const [username, setUsername] = useState(localStorage.getItem("username"))
 
+    const dollar = Math.floor(totalPrice / 23500);
 
     const getCart = async () => {
         try {
             const res = await getShoppingCartAPI();
-            await setShoppingCart(res.data)
+            await setShoppingCart(res)
             setTotalQuantity(0);
             setTotalPrice(0);
             if (res != null) {
@@ -28,8 +33,62 @@ export function ShoppingCart() {
 
         }
     }
-    console.log(shoppingCart)
 
+
+    const deleteShoppingCart = async (id, idS) => {
+        await deleteShoppingCartAPI(id, idS)
+        Swal.fire({
+            icon: "success",
+            title: "Xóa sản phẩm thành công!!",
+            timer: "3000"
+        })
+        getCart()
+    }
+    const deleteCart = async (id, name, idS) => {
+        Swal.fire({
+            icon: "warning",
+            title: `Bạn có muốn xóa sản phẩm <span class='al'> ${name} </span> khỏi giỏ hàng không?`,
+            showCancelButton: true,
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Không"
+        })
+            .then((rs) => {
+                if (rs.isConfirmed) {
+                    deleteShoppingCart(id, idS)
+                }
+            })
+    }
+    const setQuantity = async (val, id, vQuantity, sessionProduct) => {
+        if (vQuantity > 1 || val == 1) {
+            await setShoppingCartAPI(val, id, sessionProduct);
+            getCart();
+        }
+    }
+
+    const paymentt = async () => {
+        try {
+            const res = await createOrderAPI()
+            await getCart()
+            toast.success("Đặt hàng thành công!!")
+        } catch (error) {
+            toast.error(error.response.data)
+        }
+
+    }
+
+    const payment = () => {
+        Swal.fire({
+            icon: "success",
+            title: `Bạn có muốn thanh toán không?`,
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Không"
+        })
+            .then((rs) => {
+                if (rs.isConfirmed) {
+                    paymentt()
+                }
+            })
+    }
     useEffect(() => {
         document.title = "Giỏ hàng";
         window.scrollTo(0, 0)
@@ -57,7 +116,7 @@ export function ShoppingCart() {
                             </thead>
                             <tbody>
                             {shoppingCart ? shoppingCart.length < 1 ?
-                                 <>
+                                <>
                                     <tr>
                                         <td style={{textAlign: "center"}} colSpan="6">
                                             <h4 style={{color: "red"}}>Chưa có sản phẩm nào trong giỏ hàng.</h4>
@@ -65,9 +124,9 @@ export function ShoppingCart() {
                                     </tr>
 
                                 </>
-                                     :
+                                :
 
-                                ( shoppingCart.map((s) => (
+                                (shoppingCart.map((s) => (
                                     <tr>
                                         <td>
                                             {s.quantity < 1 ?
@@ -76,7 +135,7 @@ export function ShoppingCart() {
                                                      alt=""/>
                                                 :
                                                 <img className="pic"
-                                                     src={s.images.image}
+                                                     src={s?.products.image}
                                                      alt=""/>
 
                                             }
@@ -86,33 +145,48 @@ export function ShoppingCart() {
                                         <td>
                                             <div className="d-flex">
                                                 <div className="d-flex">
-                                                    <button type="button" className="minus"><span>-</span></button>
-                                                    <input value=""
+                                                    <button type="button" className="minus"
+                                                            onClick={() => setQuantity(0, s.id, s.quantity, s.products)}>
+                                                        <span>-</span></button>
+                                                    <input value={s.quantity}
                                                            className="input" min="0" style={{padding: "0 0"}}/>
-                                                    <button type="button" value="+" className="plus"><span>+</span>
+                                                    <button type="button" value="+" className="plus"
+                                                            onClick={() => setQuantity(1, s.id, s.quantity, s.products)}>
+                                                        <span>+</span>
                                                     </button>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>{(+s.price).toLocaleString()} VNĐ</td>
                                         <td>
-                                            <a title="Delete"><i class="bi bi-x" style={{fontSize: "200%"}}></i></a>
+                                            <a title="Delete"><i class="bi bi-x" style={{fontSize: "200%"}}
+                                                                 onClick={() => deleteCart(s.id, s.products.name, s.products.id)}></i></a>
                                         </td>
 
                                     </tr>
-                                    )))
-                                  : <>
-                                <tr>
-                                    <td style={{textAlign: "center"}} colSpan="6">
-                                        <h4 style={{color: "red"}}>Chưa có sản phẩm nào trong giỏ hàng.</h4>
-                                    </td>
-                                </tr>
+                                )))
+                                : <>
+                                    <tr>
+                                        <td style={{textAlign: "center"}} colSpan="6">
+                                            <h4 style={{color: "red"}}>Chưa có sản phẩm nào trong giỏ hàng.</h4>
+                                        </td>
+                                    </tr>
 
-                            </>
+                                </>
                             }
 
                             </tbody>
                         </table>
+                        <div className="full" style={{marginRight: "10%", marginLeft: "10%"}}
+                             title="Quay Lại">
+                            <Link to='/'>
+                                <button style={{background: "#6699FF"}}
+                                        className="btn btn-lg btn-info w-40 fs-6">
+                                    <p style={{color: "white"}}><ArrowBackIcon style={{fontSize: "200%"}}/> Tiếp tục
+                                        xem sản phẩm</p>
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                     <div className="col-md-3">
                         <div class="stack">
@@ -126,45 +200,45 @@ export function ShoppingCart() {
                                         color: "#6495ED"
                                     }}>Thanh toán</h2>
                                     <p style={{marginLeft: "4%"}}>Số lượng sản phẩm: {totalQuantity} </p>
-                                    <h5 style={{marginLeft: "4%"}}>Tổng giá: {(totalPrice).toLocaleString()} VNĐ</h5>
+                                    <h5 style={{marginLeft: "4%"}}>Tổng: {(totalPrice).toLocaleString()} VNĐ</h5>
                                     <div style={{marginTop: "10%"}}>
                                         {
-                                            // totalQuantity == 0 ?(<div className="full" style={{  marginLeft: "45%" ,marginBottom:"5%"}} title="Back Home">
-                                            //     <Link to='/'>
-                                            //         <ArrowBackIcon style={{ fontSize: "200%" }} />
-                                            //     </Link>
-                                            // </div>):(
-                                            //     <div className="full">
-                                            //         {
-                                            //             username ? (
-                                            //
-                                            //                 <PayPalButton
-                                            //                 amount={totalPrice==0?1:totalPrice}
-                                            //                 // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                                            //                 onSuccess={(details, data) => {
-                                            //                     paymentt()
-                                            //
-                                            //                     // OPTIONAL: Call your server to save the transaction
-                                            //                     return fetch("/paypal-transaction-complete", {
-                                            //                         method: "post",
-                                            //                         body: JSON.stringify({
-                                            //                             orderID: data.orderID
-                                            //                         })
-                                            //                     });
-                                            //                 }}
-                                            //                 onError={(e) =>{
-                                            //                     toast.error("Thanh toán thất bại!!")
-                                            //                 }}
-                                            //             />
-                                            //             ) :
-                                            //                 (<Link to='/login' title='Payment' style={{  marginLeft: "45%" ,marginBottom:"5%"}}>
-                                            //                     <CreditScoreIcon style={{ fontSize: "200%" }} />
-                                            //                 </Link>)
-                                            //         }
-                                            //
-                                            //
-                                            //     </div>
-                                            // )
+                                            totalQuantity == 0 ? (<div className="full" style={{
+                                                marginLeft: "45%",
+                                                marginBottom: "5%"
+                                            }} title="Back Home">
+                                            </div>) : (
+                                                <div className="full">
+                                                    {
+                                                        username ? (
+
+                                                                <PayPalButton
+                                                                    amount={dollar == 0 ? 1 : dollar}
+                                                                    // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                                                    onSuccess={(details, data) => {
+                                                                        paymentt()
+                                                                        // OPTIONAL: Call your server to save the transaction
+                                                                        return fetch("/paypal-transaction-complete", {
+                                                                            method: "post",
+                                                                            body: JSON.stringify({
+                                                                                orderID: data.orderID
+                                                                            })
+                                                                        });
+                                                                    }}
+                                                                    onError={(e) => {
+                                                                        toast.error("Thanh toán thất bại!!")
+                                                                    }}
+                                                                />
+                                                            ) :
+                                                            (<Link to='/login' title='Payment'
+                                                                   style={{marginLeft: "45%", marginBottom: "5%"}}>
+                                                                <CreditScoreIcon style={{fontSize: "200%"}}/>
+                                                            </Link>)
+                                                    }
+
+
+                                                </div>
+                                            )
                                         }
                                     </div>
                                 </div>
@@ -173,8 +247,9 @@ export function ShoppingCart() {
                     </div>
                 </div>
 
-
+                <ToastContainer/>
             </div>
         </>
     )
+
 }

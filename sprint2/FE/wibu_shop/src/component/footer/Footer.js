@@ -125,7 +125,7 @@ export function Footer() {
   </section>
   {/* End Contact Section */}
   {/* ======= Footer ======= */}
-  <footer id="footer">
+  <footer id="footer" style={{marginTop:"3vh"}}>
     <div className="container">
       <div className="row d-flex align-items-center">
         <div className="col-lg-6 text-lg-left text-center">

@@ -8,4 +8,5 @@ public interface IProductService {
     Page<Products> getAll(Pageable pageable, String name);
 
     Products getProduct(Long id);
+
 }

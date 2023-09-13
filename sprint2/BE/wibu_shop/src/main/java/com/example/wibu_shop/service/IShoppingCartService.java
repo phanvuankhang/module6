@@ -10,4 +10,9 @@ public interface IShoppingCartService {
     List<ShoppingCart> findAllByCustomer(Long id);
 
     void createCart(Products products, Customers customers, Integer quantity);
+
+    void deleteCart(Long id);
+
+    void deleteByCustomer(Customers customers);
+    void setCart(Integer index, Long id);
 }

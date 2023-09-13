@@ -47,27 +47,31 @@ export function Header() {
                     </div>
                     <nav id="navbar" className="navbar">
                         <ul>
-                            <li style={{marginRight: "1vw"}}>
+                            <li>
                                 <NavLink className="nav-link scrollto " to='/'>
                                     Trang Chủ
                                 </NavLink>
                             </li>
-                            <li style={{marginRight: "1vw"}}>
+                            <li>
                                 <a className="nav-link scrollto" href="#fan">
                                     Sản Phẩm
                                 </a>
                             </li>
-                            <li style={{marginRight: "1vw"}}>
+                            <li>
                                 <a className="nav-link scrollto" href="">
                                     Blogs
                                 </a>
                             </li>
-                            <li style={{marginRight: "15vw"}}>
+                            <li>
                                 <NavLink className="nav-link scrollto " to="/about">
                                     Về Chúng Tôi
                                 </NavLink>
                             </li>
-
+                            <li style={{marginRight:"9vw"}}>
+                                <a className="nav-link scrollto" href="#contact">
+                                   Liên hệ
+                                </a>
+                            </li>
                             <li style={{
                                 display: "flex", textAlign: "center",
                                 alignItems: "center", fontWeight: "300"
@@ -117,8 +121,8 @@ export function Header() {
                                                     <Link to="/info" className="dropdown-item "
                                                     ><i class="bi bi-info-square"
                                                         style={{fontSize: "110%"}}> Thông tin cá nhân</i></Link>
-                                                    {/*<Link to="/history" className="dropdown-item ">*/}
-                                                    {/*    <i class="bi bi-card-list" style={{fontSize: "110%"}}> </i></Link>*/}
+                                                    <Link to="/history" className="dropdown-item ">
+                                                        <i class="bi bi-card-list" style={{fontSize: "110%"}}> Lịch sử giao dịch</i></Link>
                                                     <Link className="dropdown-item " onClick={() => handleLogout()}
                                                           to='/login'><i class="bi bi-box-arrow-in-right"
                                                                          style={{fontSize: "120%"}}> Thoát</i></Link>

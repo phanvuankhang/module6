@@ -1,4 +1,9 @@
+import {useEffect} from "react";
+
 export const AboutUs = () => {
+    useEffect(()=>{
+        window.scrollTo(0, 0)
+    })
     return (
         <>
             <div className="container" style={{marginTop: "18vh"}}>
