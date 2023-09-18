@@ -96,7 +96,7 @@ public class ShoppingCartController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCart(@PathVariable Long id) {
         try {
@@ -108,7 +108,7 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/create/{id}/{quantity}")
-    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
 
     public ResponseEntity<?> createCart(@PathVariable("id") Long id, @PathVariable("quantity") Integer quantity) {
         try {
@@ -152,3 +152,6 @@ public class ShoppingCartController {
         }
     }
 }
+
+
+

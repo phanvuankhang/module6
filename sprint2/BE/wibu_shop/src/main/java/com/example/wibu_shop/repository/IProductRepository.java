@@ -20,7 +20,8 @@ public interface IProductRepository extends JpaRepository<Products, Long> {
             "       p.is_delete\n" +
             "from products as p\n" +
             "         inner join product_type as t on t.id = p.product_type_id\n" +
-            "where t.name like concat('%', :name, '%')\n" +
+            "where p.name like concat('%', :name, '%')\n" +
+            "  and t.name like concat('%', :productType, '%')\n" +
             "  and p.is_delete = false", nativeQuery = true)
-    Page<Products> getAll(Pageable pageable, @Param("name")String name);
+    Page<Products> getAll(Pageable pageable, @Param("name") String name, @Param("productType") String productType);
 }

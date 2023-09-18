@@ -12,6 +12,7 @@ import com.example.wibu_shop.service.IShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @PostMapping("")
     public ResponseEntity<?> createOrder() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -48,6 +50,7 @@ public class OrderController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @GetMapping("")
     public ResponseEntity<List<Orders>> getHistory() {
         try {
@@ -61,6 +64,7 @@ public class OrderController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @GetMapping("/detail")
     public ResponseEntity<List<OrderDetail>> getHistoryDetail(@RequestParam("id") Long id) {
         try {
@@ -68,7 +72,7 @@ public class OrderController {
             if (orderDetailList.size() == 0) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>(orderDetailList,HttpStatus.OK);
+            return new ResponseEntity<>(orderDetailList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

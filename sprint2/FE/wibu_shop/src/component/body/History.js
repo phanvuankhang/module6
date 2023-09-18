@@ -145,7 +145,7 @@ export function History() {
                     style={customStyles}
                     contentLabel="Modal"
                 >
-                    <button onClick={closeModal} className='btn btn-danger' style={{marginLeft: "92%"}}>Close</button>
+                    <button onClick={closeModal} className='btn btn-primary' style={{marginLeft: "97%"}}>X</button>
 
                     <section className="table__body" style={customStyles.table}>
                         <table>
@@ -169,9 +169,7 @@ export function History() {
                                 <th>
                                     Tổng tiền
                                 </th>
-                                <th>
 
-                                </th>
 
                             </tr>
                             </thead>
@@ -180,22 +178,18 @@ export function History() {
                                 orderDetail && orderDetail.map((val, index) => (
                                     <tr key={index}>
                                         <td> {index + 1} </td>
-                                        <td>
-                                            <img src={val.products.image} alt=""/>
-                                            {val.products.name}
-                                        </td>
+                                        <NavLink to={`/details/${val.products.id}`}>
+                                            <td>
+                                                <img src={val.products.image} alt=""/>
+                                                {val.products.name}
+                                            </td>
+                                        </NavLink>
                                         <td> {val.products.productType.name} </td>
                                         <td> {(+val.products.price).toLocaleString()} VNĐ</td>
-                                        <td style={{textAlign:"center"}}> {val.quantity} </td>
+                                        <td style={{textAlign: "center"}}> {val.quantity} </td>
                                         <td>
                                             {(+val.price).toLocaleString()} VNĐ
                                         </td>
-                                        <td>
-                                            <NavLink to={`/details/${val.products.id}`}>
-                                                Mua lại
-                                            </NavLink>
-                                        </td>
-
                                     </tr>
                                 ))
                             }

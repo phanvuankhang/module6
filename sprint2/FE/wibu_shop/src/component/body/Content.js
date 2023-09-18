@@ -8,6 +8,7 @@ import React, {useEffect, useState} from "react";
 import {getAllProductsAPI} from "../../service/ProductsService";
 import {ToastContainer, toast} from "react-toastify";
 import {createShoppingCartAPI} from "../../service/ShoppingCartService";
+import {Field, Form, Formik} from "formik";
 
 
 export function Content() {
@@ -16,12 +17,14 @@ export function Content() {
     const [page, setPage] = useState(0);
     const [totalPage, setTotalPage] = useState();
     const [type, setType] = useState("null");
+    const [name, setName] = useState("");
+    const [orderBy, setOrderBy] = useState("");
     const role = localStorage.getItem('role');
 
 
-    const getProductList = async (page = 0, type = "null") => {
+    const getProductList = async (page = 0, name="", type = "null", orderBy="") => {
         try {
-            const res = await getAllProductsAPI(page, type)
+            const res = await getAllProductsAPI(page, name, type, orderBy)
             setProductList(() => [...productList, ...res.data.content]);
             setTotalPage(res.data.totalPages);
         } catch (error) {
@@ -29,7 +32,7 @@ export function Content() {
         }
     }
     const getAllProductType = async (page = 0, type = "null") => {
-        const res = await getAllProductsAPI(page, type)
+        const res = await getAllProductsAPI(page, name, type, orderBy)
         setPage(0);
         setProductList(res.data.content);
         setTotalPage(res.data.totalPages);
@@ -37,7 +40,7 @@ export function Content() {
 
 
     const loadMore = async () => {
-        await getProductList(page + 1, type)
+        await getProductList(page + 1, name, type, orderBy)
         setPage(page + 1);
     }
 
@@ -141,10 +144,35 @@ export function Content() {
 
                 <section id="fan" className="portfolio row">
                     <div className="container">
-                        <div className="section-title" data-aos="fade-up">
-                            <h2>Sản phẩm nổi bật</h2>
-                            <p>Chọn sản phẩm yêu thích của bạn</p>
-                        </div>
+                        <Formik initialValues={{
+                            name:"",
+                            orderBy:""
+                        }}>
+                            <Form>
+                                <div className="section-title" data-aos="fade-up">
+                                    <h2>Sản phẩm nổi bật</h2>
+                                    <div className="row ">
+                                        <div className="form-group col-3" style={{marginLeft: "27vw"}}>
+                                            <Field
+                                                name="name"
+                                                type="text"
+                                                className="form-control form-control-lg bg-light fs-6"
+                                                placeholder="Nhập tên sản phẩm."
+                                            />
+                                        </div>
+                                        <div className=" col-5" style={{marginTop: "0.5vh"}}>
+                                            <Field as="select" className="form-control w-25" name="productType" id="">
+                                                <option value="new">Lọc</option>
+                                                <option value="new">-Sản phẩm mới nhất</option>
+                                                <option value="a-z">-Sắp xếp A-Z</option>
+                                                <option value="priceAscending">-Giá tăng dần</option>
+                                                <option value="priceDescending">-Giá giảm dần</option>
+                                            </Field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Form>
+                        </Formik>
                         <div className="row" data-aos="fade-up" data-aos-delay={200}>
                             <div className="col-lg-12 d-flex justify-content-center">
                                 <ul id="portfolio-flters">
@@ -226,5 +254,5 @@ export function Content() {
             <ToastContainer/>
         </>
 
-)
+    )
 }

@@ -63,7 +63,7 @@ public class UsersController {
                 List<ShoppingCart> shoppingCartList = (List<ShoppingCart>) session.getAttribute("cart");
                 Customers customers = customerService.getCustomer(principal.getUsername());
                 try {
-
+                    shoppingCartService.deleteByCustomer(customers);
                 } catch (Exception e) {
                     throw e;
                 }

@@ -10,6 +10,9 @@ import React, {useEffect, useState} from "react";
 import {getAllProductsAPI, getDetailProductAPI, getImagesProductAPI} from "../../service/ProductsService";
 import {createShoppingCartAPI} from "../../service/ShoppingCartService";
 import { toast} from "react-toastify";
+import {getShoppingCart} from "../../redux/actions/cart";
+import {useDispatch} from "react-redux";
+import {Field, Form, Formik} from "formik";
 
 export function Details() {
     const navigate = useNavigate();
@@ -21,6 +24,7 @@ export function Details() {
     const [productList, setProductList] = useState([]);
     const [quantity, setQuantity] = useState(1)
     const role = localStorage.getItem('role');
+    const dispatch = useDispatch()
 
     const responsive = {
         desktop: {
@@ -48,7 +52,7 @@ export function Details() {
             }
             setProductType(res.productType)
         } catch (error) {
-            // navigate('/error')
+            navigate('/error')
         }
     }
 
@@ -59,6 +63,7 @@ export function Details() {
 
     const addCart = async () => {
         await createShoppingCartAPI(product, quantity)
+        await dispatch(getShoppingCart());
         toast.success(`Thêm ${quantity} sản phẩm ${product.name} vào giỏ hàng thành công!!`)
         navigate("/")
     }

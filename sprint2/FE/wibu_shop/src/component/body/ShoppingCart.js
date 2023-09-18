@@ -2,18 +2,22 @@ import {Link} from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React, {useEffect, useState} from "react";
 import {deleteShoppingCartAPI, getShoppingCartAPI, setShoppingCartAPI} from "../../service/ShoppingCartService";
-import {ToastContainer,toast} from 'react-toastify';
+import {ToastContainer, toast} from 'react-toastify';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import Swal from "sweetalert2";
 import {createOrderAPI} from "../../service/OrderService";
 import {PayPalButton} from "react-paypal-button-v2";
+import {useDispatch} from "react-redux";
+import {getShoppingCart} from "../../redux/actions/cart";
 
 
 export function ShoppingCart() {
     const [shoppingCart, setShoppingCart] = useState([]);
-    const [totalPrice, setTotalPrice] = useState(0)
-    const [totalQuantity, setTotalQuantity] = useState(0)
-    const [username, setUsername] = useState(localStorage.getItem("username"))
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [totalQuantity, setTotalQuantity] = useState(0);
+    const [username, setUsername] = useState(localStorage.getItem("username"));
+    const dispatch = useDispatch()
+
 
     const dollar = Math.floor(totalPrice / 23500);
 
@@ -43,6 +47,8 @@ export function ShoppingCart() {
             timer: "3000"
         })
         getCart()
+        await dispatch(getShoppingCart())
+
     }
     const deleteCart = async (id, name, idS) => {
         Swal.fire({
@@ -69,6 +75,7 @@ export function ShoppingCart() {
         try {
             const res = await createOrderAPI()
             await getCart()
+            await dispatch(getShoppingCart())
             toast.success("Đặt hàng thành công!!")
         } catch (error) {
             toast.error(error.response.data)
@@ -159,7 +166,7 @@ export function ShoppingCart() {
                                         </td>
                                         <td>{(+s.price).toLocaleString()} VNĐ</td>
                                         <td>
-                                            <a title="Delete"><i class="bi bi-x" style={{fontSize: "200%"}}
+                                            <a title="Delete" className="btn"><i class="bi bi-x" style={{fontSize: "200%"}}
                                                                  onClick={() => deleteCart(s.id, s.products.name, s.products.id)}></i></a>
                                         </td>
 
@@ -206,7 +213,7 @@ export function ShoppingCart() {
                                             totalQuantity == 0 ? (<div className="full" style={{
                                                 marginLeft: "45%",
                                                 marginBottom: "5%"
-                                            }} title="Back Home">
+                                            }} title="Về trang chủ">
                                             </div>) : (
                                                 <div className="full">
                                                     {
@@ -230,7 +237,7 @@ export function ShoppingCart() {
                                                                     }}
                                                                 />
                                                             ) :
-                                                            (<Link to='/login' title='Payment'
+                                                            (<Link to='/login/c' title='Thanh toán'
                                                                    style={{marginLeft: "45%", marginBottom: "5%"}}>
                                                                 <CreditScoreIcon style={{fontSize: "200%"}}/>
                                                             </Link>)

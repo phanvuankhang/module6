@@ -128,23 +128,11 @@ export function Footer() {
   <footer id="footer" style={{marginTop:"3vh"}}>
     <div className="container">
       <div className="row d-flex align-items-center">
-        <div className="col-lg-6 text-lg-left text-center">
+        <div className="col-lg-12 text-lg-left text-center">
           <div className="copyright">
             © Copyright <strong>Wibu Shop</strong>. All Rights Reserved
           </div>
 
-        </div>
-        <div className="col-lg-6">
-          <nav className="footer-links text-lg-right text-center pt-2 pt-lg-0">
-            <a href="#intro" className="scrollto">
-              Trang chủ
-            </a>
-            <a href="#about" className="scrollto">
-              Về chúng tôi
-            </a>
-            <a href="#">Chính sách bảo mật</a>
-            <a href="#">Điều khoản sử dụng</a>
-          </nav>
         </div>
       </div>
     </div>

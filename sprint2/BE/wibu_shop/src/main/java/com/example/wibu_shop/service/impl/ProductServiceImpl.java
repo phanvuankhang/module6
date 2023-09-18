@@ -14,11 +14,14 @@ public class ProductServiceImpl implements IProductService {
     private IProductRepository productRepository;
 
     @Override
-    public Page<Products> getAll(Pageable pageable, String name) {
-        if (name.equals("null")) {
-            return productRepository.getAll(pageable, "");
+    public Page<Products> getAll(Pageable pageable, String name,String productType) {
+        if (productType.equals("null")){
+            return productRepository.getAll(pageable,name,"");
+
+        }else {
+            return productRepository.getAll(pageable,name,productType);
         }
-        return productRepository.getAll(pageable, name);
+
     }
 
     @Override

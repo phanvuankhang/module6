@@ -19,15 +19,39 @@ public class ProductController {
     private IProductService productService;
 
     @GetMapping("")
-    public ResponseEntity<Page<Products>> getAllProduct(@RequestParam(value = "name", defaultValue = "null") String name,
-                                                           @RequestParam(value = "page", defaultValue = "0") Integer page) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "create_date");
+    public ResponseEntity<Page<Products>> getAllProduct(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                        @RequestParam(value = "name", defaultValue = "") String name,
+                                                        @RequestParam(value = "productType", defaultValue = "") String productType,
+                                                        @RequestParam(value = "orderBy", defaultValue = "0") String orderBy) {
+        Sort sort = checkOrderBy(orderBy);
         Pageable pageable = PageRequest.of(page, 8, sort);
         try {
-            return new ResponseEntity<>(productService.getAll(pageable, name), HttpStatus.OK);
+            return new ResponseEntity<>(productService.getAll(pageable, name, productType), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public Sort checkOrderBy(String orderBy) {
+        Sort sort;
+        switch (orderBy) {
+            case "new":
+                sort = Sort.by("id").descending();
+                break;
+            case "a-z":
+                sort = Sort.by("name").ascending();
+                break;
+            case "priceAscending":
+                sort = Sort.by("price").ascending();
+                break;
+            case "priceDescending":
+                sort = Sort.by("price").descending();
+                break;
+            default:
+                sort = Sort.by("id").descending();
+                break;
+        }
+        return sort;
     }
 
     @GetMapping("/detail/{id}")

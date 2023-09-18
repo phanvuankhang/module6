@@ -7,6 +7,8 @@ import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap';
 import logo from '../../images/logo.png';
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
+import {useDispatch, useSelector} from "react-redux";
+import {getShoppingCart, updateCart} from "../../redux/actions/cart";
 
 export function Header() {
     const [isLogin, setIsLogin] = useState();
@@ -14,6 +16,8 @@ export function Header() {
     const role = localStorage.getItem('role');
     const [username, setUsername] = useState(localStorage.getItem('username'));
     const [dropdown, setDropdown] = useState(false);
+    const quantityProduct = useSelector(state => state.cart)
+    const dispatch = useDispatch()
 
 
     const toggleDropdown = () => {
@@ -26,11 +30,16 @@ export function Header() {
         localStorage.removeItem("role");
         setIsLogin(false);
         setDropdown(false);
+        window.location.reload();
+        window.location.href = '/login/l';
         toast.success("Đăng xuất thành công !!");
     }
     useEffect(() => {
         if (token) {
             setIsLogin(true);
+            dispatch(getShoppingCart(true))
+        } else {
+            dispatch(getShoppingCart(false))
         }
     }, [])
     return (
@@ -59,7 +68,7 @@ export function Header() {
                             </li>
                             <li>
                                 <a className="nav-link scrollto" href="">
-                                    Blogs
+                                    Tin tức
                                 </a>
                             </li>
                             <li>
@@ -67,9 +76,9 @@ export function Header() {
                                     Về Chúng Tôi
                                 </NavLink>
                             </li>
-                            <li style={{marginRight:"9vw"}}>
+                            <li style={{marginRight: "9vw"}}>
                                 <a className="nav-link scrollto" href="#contact">
-                                   Liên hệ
+                                    Liên hệ
                                 </a>
                             </li>
                             <li style={{
@@ -96,7 +105,8 @@ export function Header() {
                                                     {/*><i class="bi bi-info-square"*/}
                                                     {/*    style={{fontSize: "110%"}}> Quản lý cửa hàng</i></Link>*/}
                                                     <Link to="/history" className="dropdown-item ">
-                                                        <i class="bi bi-card-list" style={{fontSize: "110%"}}> Lịch sử đặt hàng</i></Link>
+                                                        <i class="bi bi-card-list" style={{fontSize: "110%"}}> Lịch sử
+                                                            đặt hàng</i></Link>
                                                     <Link className="dropdown-item " onClick={() => handleLogout()}
                                                           to='/login'><i class="bi bi-box-arrow-in-right"
                                                                          style={{fontSize: "120%"}}> Thoát</i></Link>
@@ -118,13 +128,14 @@ export function Header() {
                                                     style={{color: "#3498db"}}>{username}</span>
                                                 </DropdownToggle>
                                                 <DropdownMenu className="abc">
-                                                    <Link to="/info" className="dropdown-item "
+                                                    <Link to="/information" className="dropdown-item "
                                                     ><i class="bi bi-info-square"
                                                         style={{fontSize: "110%"}}> Thông tin cá nhân</i></Link>
                                                     <Link to="/history" className="dropdown-item ">
-                                                        <i class="bi bi-card-list" style={{fontSize: "110%"}}> Lịch sử giao dịch</i></Link>
+                                                        <i class="bi bi-card-list" style={{fontSize: "110%"}}> Lịch sử
+                                                            giao dịch</i></Link>
                                                     <Link className="dropdown-item " onClick={() => handleLogout()}
-                                                          to='/login'><i class="bi bi-box-arrow-in-right"
+                                                          to='/login/l'><i class="bi bi-box-arrow-in-right"
                                                                          style={{fontSize: "120%"}}> Thoát</i></Link>
                                                 </DropdownMenu>
                                             </Dropdown>
@@ -132,7 +143,7 @@ export function Header() {
                                         </>
                                     :
                                     <>
-                                        <NavLink to="/login" className='font-a-header '
+                                        <NavLink to="/login/l" className='font-a-header '
                                         ><i class="bi bi-person" style={{fontSize: '130%',}}></i>Đăng nhập</NavLink>
 
                                     </>
@@ -143,11 +154,15 @@ export function Header() {
                                 role && role === "ROLE_ADMIN" ?
                                     "" :
                                     <NavLink to='/cart' title='Shoping Cart'>
-                                        <ShoppingCartOutlinedIcon style={{marginLeft: "10%"}}/>Giỏ hàng
+                                        <i className="bi bi-cart-dash" style={{fontSize:"20px"}}>
+                                            <sup style={{fontSize: "15px",color:"red"}}>{quantityProduct > 0 ? quantityProduct : ""}</sup>
+                                        </i> Giỏ hàng
                                     </NavLink>
                                 :
                                 <NavLink to='/cart' title='Shoping Cart'>
-                                    <ShoppingCartOutlinedIcon style={{marginLeft: "10%"}}/>Giỏ hàng
+                                    <i className="bi bi-cart-dash" style={{fontSize:"20px"}}>
+                                        <sup style={{fontSize: "15px",color:"red"}}>{quantityProduct > 0 ? quantityProduct : ""}</sup>
+                                    </i> Giỏ hàng
                                 </NavLink>
                             }
                         </ul>

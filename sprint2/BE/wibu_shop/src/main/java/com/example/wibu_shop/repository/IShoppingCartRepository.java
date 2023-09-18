@@ -20,4 +20,5 @@ public interface IShoppingCartRepository extends JpaRepository<ShoppingCart, Lon
     @Modifying
     @Query(value = "DELETE FROM shopping_cart WHERE customer_id = :id",nativeQuery = true)
     void deleteByCustomer(@Param("id") Long id);
+
 }

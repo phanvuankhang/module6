@@ -11,23 +11,27 @@ import {ShoppingCart} from "./component/body/ShoppingCart";
 import {ErrorAll} from "./component/body/ErrorAll";
 import {AboutUs} from "./component/body/AboutUs";
 import {History} from "./component/body/History";
-
+import {Information} from "./component/body/Information";
+import Provider from "react-redux/es/components/Provider";
+import store from "./redux/store";
 
 function App() {
     return (
-        <>
+        <> <Provider store={store}>
             <Header/>
             <Routes>
                 <Route path="/" element={<Content/>}/>
-                <Route path="/login" element={<Login/>}/>
+                <Route path="/login/:params" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/details/:id" element={<Details/>}/>
                 <Route path="/cart" element={<ShoppingCart/>}/>
                 <Route path="/error" element={<ErrorAll/>}/>
                 <Route path="/about" element={<AboutUs/>}/>
                 <Route path="/history" element={<History/>}/>
+                <Route path="/information" element={<Information/>}/>
             </Routes>
             <Footer/>
+        </Provider>
         </>
     );
 }

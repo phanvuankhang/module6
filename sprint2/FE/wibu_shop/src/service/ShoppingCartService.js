@@ -36,10 +36,10 @@ export const createShoppingCartAPI = async (idProduct, quantity) => {
                     }
                 }
             );
-            return res.data;
+            return res;
         } else {
             const res = await axios.post("http://localhost:8080/api/shopping", newValue, {withCredentials: true})
-            return res.data;
+            return res;
         }
     } catch (e) {
         console.log(e)

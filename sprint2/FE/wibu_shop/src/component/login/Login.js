@@ -1,9 +1,9 @@
 import "../login/login.css"
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import React, {useEffect, useState} from "react";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
 
@@ -12,11 +12,11 @@ export function Login() {
     const navigate = useNavigate();
     const [userName, setUserName] = useState(localStorage.getItem("user_name"));
     const [password, setPassword] = useState(localStorage.getItem("password"));
+    const {params} = useParams();
 
     const setPwUs = async (u, p) => {
         setUserName(u);
         setPassword(p);
-        // console.log(userName, password);
     };
 
 
@@ -34,6 +34,7 @@ export function Login() {
         document.title = "Đăng nhập";
         window.scrollTo(0, 0)
     }, [])
+
     return (
         <>
             {/*--------------------- Main Container ------------------------*/}
@@ -49,7 +50,7 @@ export function Login() {
                         <div>
                             <figure>
                                 <img
-                                    src="login.png"
+                                    src="/login.png"
                                     alt="sing up image"
                                 />
                             </figure>
@@ -86,13 +87,17 @@ export function Login() {
                                             password: values.password,
                                         }
                                         try {
-                                            const res = await axios.post("http://localhost:8080/api/users/authenticate", values,{ withCredentials: true });
+                                            const res = await axios.post("http://localhost:8080/api/users/authenticate", values, {withCredentials: true});
                                             if (res.data.token) {
                                                 localStorage.setItem("token", res.data.token);
                                                 localStorage.setItem("username", res.data.username);
                                                 localStorage.setItem("role", res.data.role);
                                             }
-                                            navigate("/");
+                                           if (params==="l"){
+                                                navigate("/")
+                                            }else {
+                                                navigate("/cart")
+                                            }
                                             window.location.reload()
                                         } catch (e) {
                                             toast.error("Sai tài khoản hoặc mật khẩu !!");
@@ -158,7 +163,7 @@ export function Login() {
                             </Formik>
                             <div className="input-group mb-3">
                                 <button className="btn btn-lg btn-light w-100 fs-6">
-                                    <img src="google.jpg" style={{width: 20}} className="me-2"/>
+                                    <img src="/google.jpg" style={{width: 20}} className="me-2"/>
                                     <small>Đăng nhập bằng Google</small>
                                 </button>
                             </div>
