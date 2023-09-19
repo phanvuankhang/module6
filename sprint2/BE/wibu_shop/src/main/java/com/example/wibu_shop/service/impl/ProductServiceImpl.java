@@ -14,7 +14,7 @@ public class ProductServiceImpl implements IProductService {
     private IProductRepository productRepository;
 
     @Override
-    public Page<Products> getAll(Pageable pageable, String name,String productType) {
+    public Page<Products>   getAll(Pageable pageable, String name,String productType) {
         if (productType.equals("null")){
             return productRepository.getAll(pageable,name,"");
 

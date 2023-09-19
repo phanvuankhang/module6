@@ -10,7 +10,6 @@ import com.example.wibu_shop.service.IShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -73,7 +72,6 @@ public class ShoppingCartController {
             shoppingCart.setPrice(shoppingCart.getProducts().getPrice() * shoppingCart.getQuantity());
             shoppingCartList.add(shoppingCart);
             session.setAttribute("cart", shoppingCartList);
-
         }
         session.setAttribute("cart", shoppingCartList);
         return new ResponseEntity<>(session.getAttribute("cart"), HttpStatus.OK);
@@ -116,8 +114,7 @@ public class ShoppingCartController {
             JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
             Products products = productService.getProduct(id);
             Customers customers = customerService.getCustomer(principal.getUsername());
-            shoppingCartService.createCart(products, customers, quantity);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return shoppingCartService.createCart(products, customers, quantity);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -145,8 +142,8 @@ public class ShoppingCartController {
                 session.setAttribute("cart", shoppingCartList);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
-            shoppingCartService.setCart(index, id);
-            return new ResponseEntity<>(HttpStatus.OK);
+
+            return shoppingCartService.setCart(index, id);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

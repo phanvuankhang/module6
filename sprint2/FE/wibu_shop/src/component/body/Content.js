@@ -9,6 +9,8 @@ import {getAllProductsAPI} from "../../service/ProductsService";
 import {ToastContainer, toast} from "react-toastify";
 import {createShoppingCartAPI} from "../../service/ShoppingCartService";
 import {Field, Form, Formik} from "formik";
+import {useDispatch} from "react-redux";
+import {getShoppingCart} from "../../redux/actions/cart";
 
 
 export function Content() {
@@ -20,13 +22,15 @@ export function Content() {
     const [name, setName] = useState("");
     const [orderBy, setOrderBy] = useState("");
     const role = localStorage.getItem('role');
+    const dispatch = useDispatch()
 
 
-    const getProductList = async (page = 0, name="", type = "null", orderBy="") => {
+    const getProductList = async (page = 0, name = "", type = "null", orderBy = "") => {
         try {
             const res = await getAllProductsAPI(page, name, type, orderBy)
             setProductList(() => [...productList, ...res.data.content]);
             setTotalPage(res.data.totalPages);
+
         } catch (error) {
             navigate('/error')
         }
@@ -71,11 +75,19 @@ export function Content() {
     }
 
     const addCart = async (id) => {
-        await createShoppingCartAPI(id, 1)
-        toast.success("Thêm vào giỏ hàng thành công!!")
+        try {
+            await createShoppingCartAPI(id, 1)
+            await dispatch(getShoppingCart())
+
+            await toast.success("Thêm vào giỏ hàng thành công!!")
+        }catch (e) {
+            await toast.error("Số lượng sản phẩm trong giỏ hàng vượt quá số lượng trong kho.!!")
+        }
+
     }
     useEffect(() => {
         getProductList();
+
         window.scrollTo(0, 0)
     }, [])
 
@@ -144,35 +156,59 @@ export function Content() {
 
                 <section id="fan" className="portfolio row">
                     <div className="container">
-                        <Formik initialValues={{
-                            name:"",
-                            orderBy:""
-                        }}>
-                            <Form>
-                                <div className="section-title" data-aos="fade-up">
-                                    <h2>Sản phẩm nổi bật</h2>
+                        <div className="section-title" data-aos="fade-up">
+                            <h2>Sản phẩm nổi bật</h2>
+                            <Formik initialValues={{
+                                name: "",
+                                orderBy: ""
+                            }} onSubmit={async (values) => {
+                                const search = async () => {
+                                    const res = await getAllProductsAPI(0, values.name.trim(), type, values.orderBy)
+                                    await setName(values.name.trim())
+                                    await setOrderBy(values.orderBy)
+                                    await setPage(0)
+                                    setProductList(res.data.content)
+                                    console.log(res)
+                                }
+                                search()
+                            }}>
+                                <Form>
                                     <div className="row ">
-                                        <div className="form-group col-3" style={{marginLeft: "27vw"}}>
+                                        <div className="form-group col-3" style={{marginLeft: "22vw"}}>
                                             <Field
                                                 name="name"
                                                 type="text"
-                                                className="form-control form-control-lg bg-light fs-6"
+                                                className="form-control form-control-lg bg-light fs-6 k"
                                                 placeholder="Nhập tên sản phẩm."
                                             />
                                         </div>
-                                        <div className=" col-5" style={{marginTop: "0.5vh"}}>
-                                            <Field as="select" className="form-control w-25" name="productType" id="">
-                                                <option value="new">Lọc</option>
-                                                <option value="new">-Sản phẩm mới nhất</option>
-                                                <option value="a-z">-Sắp xếp A-Z</option>
-                                                <option value="priceAscending">-Giá tăng dần</option>
-                                                <option value="priceDescending">-Giá giảm dần</option>
+                                        <div className=" col-2" style={{marginTop: "0.5vh"}}>
+                                            <Field as="select" className="form-control" name="orderBy">
+                                                <option style={{textAlign: "center"}} value="new">--Sản phẩm mới
+                                                    nhất--
+                                                </option>
+                                                <option style={{textAlign: "center"}} value="a-z">--Sắp xếp A-Z--
+                                                </option>
+                                                <option style={{textAlign: "center"}} value="priceAscending">--Giá tăng
+                                                    dần--
+                                                </option>
+                                                <option style={{textAlign: "center"}} value="priceDescending">--Giá giảm
+                                                    dần--
+                                                </option>
                                             </Field>
                                         </div>
+                                        <div className='col-2'>
+                                            <button style={{background: "#3498db",marginTop:"0.5vh",marginLeft:"-6.5vw"}}
+                                                    className="btn btn ">
+                                                <span style={{color: "white"}}>Tìm kiếm</span>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </Form>
-                        </Formik>
+
+                                </Form>
+                            </Formik>
+
+                        </div>
                         <div className="row" data-aos="fade-up" data-aos-delay={200}>
                             <div className="col-lg-12 d-flex justify-content-center">
                                 <ul id="portfolio-flters">
@@ -189,65 +225,77 @@ export function Content() {
                             data-aos-delay={400}
                         >
                             {
-                                productList.map((p) => (
+                                productList.length > 0 ?
+                                    productList.map((p) => (
 
 
-                                    <div className="col-lg-3 col-md-6 portfolio-item filter-app">
-                                        <div className="portfolio-wrap">
-                                            <img
-                                                src={p?.image}
-                                                className="img-fluid"
-                                                alt=""
-                                            />
+                                        <div className="col-lg-3 col-md-6 portfolio-item filter-app">
+                                            <div className="portfolio-wrap">
+                                                <img
+                                                    src={p?.image}
+                                                    className="img-fluid"
+                                                    alt=""
+                                                />
 
-                                            <div className="portfolio-info">
-                                                <NavLink to={`/details/${p.id}`} title="Thông tin chi tiết">
+                                                <div className="portfolio-info">
+                                                    <NavLink to={`/details/${p.id}`} title="Thông tin chi tiết">
 
-                                                    <h4 style={{fontSize: "15px"}}>{p.name}</h4>
-                                                    <h3 style={{
-                                                        color: "white",
-                                                        fontSize: "20px"
-                                                    }}>{(+p.price).toLocaleString()} VNĐ</h3>
-                                                    <p>{p.productType.name}</p>
-                                                </NavLink>
-                                                {role && role === "ROLE_ADMIN" ?
-                                                    "" :
-                                                    <>
-                                                        {p.quantity >= 1 ?
-                                                            <div className="portfolio-links">
+                                                        <h4 style={{fontSize: "15px"}}>{p.name}</h4>
+                                                        <h3 style={{
+                                                            color: "white",
+                                                            fontSize: "20px"
+                                                        }}>{(+p.price).toLocaleString()} VNĐ</h3>
+                                                        <p>{p.productType.name}</p>
+                                                    </NavLink>
+                                                    {role && role === "ROLE_ADMIN" ?
+                                                        "" :
+                                                        <>
+                                                            {p.quantity >= 1 ?
+                                                                <div className="portfolio-links">
 
-                                                                <a onClick={() => addCart(p)} title="Thêm vào giỏ hàng">
-                                                                    <i className="bi bi-cart-plus"></i>
-                                                                </a>
-                                                            </div> : ""
-                                                        }
-                                                    </>
-                                                }
+                                                                    <a onClick={() => addCart(p)}
+                                                                       title="Thêm vào giỏ hàng">
+                                                                        <i className="bi bi-cart-plus"></i>
+                                                                    </a>
+                                                                </div> : ""
+                                                            }
+                                                        </>
+                                                    }
 
-                                                {
-                                                    p.quantity < 1 ?
-                                                        <h4 style={{color: "red", fontSize: "15px"}}>Hết hàng</h4> :
-                                                        ""
-                                                }
+                                                    {
+                                                        p.quantity < 1 ?
+                                                            <h4 style={{color: "red", fontSize: "15px"}}>Hết hàng</h4> :
+                                                            ""
+                                                    }
 
+                                                </div>
                                             </div>
                                         </div>
+                                    )) :
+
+                                    <div style={{textAlign: "center", marginBottom: "10vh"}}>
+                                        <img src="https://bizweb.dktcdn.net/100/330/208/files/hinh-nen-7-vien-ngoc-rong-13.jpg?v=1655530004216" alt="" style={{width:"40vw"}}/>
+                                        <h4 style={{color: "red",marginTop:"5vh"}}>Tìm kiếm không có kết quả</h4>
+                                        <h6 style={{color: "red"}}>Xin lỗi, chúng tôi không thể tìm được kết quả hợp với tìm kiếm của bạn.</h6>
                                     </div>
-                                ))
                             }
                         </div>
 
 
-                        {
-                            page < totalPage - 1 ? (
-                                <button onClick={() => loadMore()} className="load-more-button">Tải thêm</button>
+                        {productList.length  ?
+                            (
+                                page < totalPage - 1 ? (
+                                    <button onClick={() => loadMore()} className="load-more-button">Tải thêm
+                                    </button>
 
+                                ) : ""
                             ) : ""
                         }
 
                     </div>
                 </section>
-                {/* End Portfolio Section */}
+                {/* End Portfolio Section */
+                }
             </main>
             {/* End #main */}
 

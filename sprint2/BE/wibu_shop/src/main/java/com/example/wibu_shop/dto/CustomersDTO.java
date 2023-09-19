@@ -1,15 +1,26 @@
 package com.example.wibu_shop.dto;
 
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 public class CustomersDTO {
     private Long id;
+    @NotBlank(message = "Tên không được để trống")
+//    @Pattern(regexp = "^(\\s)*[A-Z][a-z]*(\\s)*([A-Z][a-z]*(\\s)*)*([A-Z][a-z]*(\\s)*)$",message = "Tên không được chứa số, ký tự đặc biệt như @,#,$... VD: Phan Vu An Khang")
     private String name;
+    @NotBlank(message = "Địa chỉ không được để trống")
     private String birthday;
     private Integer gender;
+    @NotBlank(message = "Số điện thoại không được để trống")
+//    @Pattern(regexp = "^(\\+84)[0-9]{9}|0[0-9]{9}$",message= "Số điện thoại không đúng định dạng")
     private String phoneNumber;
+    @NotBlank(message = "Email không được để trống")
+    @Email(message="Email không hợp lệ. VD: wibushop@gmail.com")
     private String email;
+    @NotBlank(message = "Địa chỉ không được để trống")
     private String address;
     private String image;
     private LocalDateTime createDate;

@@ -72,7 +72,7 @@ export function Footer() {
               <input
                 type="text"
                 name="name"
-                className="form-control"
+                className="form-control k"
                 id="name"
                 placeholder="Họ và tên"
                 required=""
@@ -81,7 +81,7 @@ export function Footer() {
             <div className="form-group">
               <input
                 type="email"
-                className="form-control"
+                className="form-control k"
                 name="email"
                 id="email"
                 placeholder="Email"
@@ -91,7 +91,7 @@ export function Footer() {
             <div className="form-group">
               <input
                 type="text"
-                className="form-control"
+                className="form-control k"
                 name="subject"
                 id="subject"
                 placeholder="Tiêu đề"
@@ -100,7 +100,7 @@ export function Footer() {
             </div>
             <div className="form-group">
               <textarea
-                className="form-control"
+                className="form-control k"
                 name="message"
                 rows={5}
                 placeholder="Nội dung"
@@ -115,7 +115,7 @@ export function Footer() {
                 Tin nhắn của bạn đã được gửi. Cảm ơn!
               </div>
             </div>
-            <div className="text-center">
+            <div className="text-center k">
               <button type="submit" >Gửi tin nhắn</button>
             </div>
           </form>

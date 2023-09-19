@@ -5,10 +5,18 @@ import com.example.wibu_shop.model.Roles;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class UsersDTO {
     private Long id;
+    @NotBlank(message = "Tên đăng nhập không được để trống")
+    @Size(min = 8, max = 20, message = "Tên đăng nhập từ 8-20 ký tự")
+    @Pattern(regexp = "^[a-z0-9]{8,}$", message = "Tên đăng nhập phải là ký tự thường")
     private String username;
+    @NotBlank(message = "Mật khẩu không được để trống")
+    @Pattern(regexp = "^[a-z0-9]{8,}$", message = "Mật khẩu ít nhất 8 ký tự và không chứa ký tự đặt biệt như @,#,$... ")
     private String password;
     private Integer verifyCode;
     private Roles roles;

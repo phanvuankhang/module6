@@ -26,7 +26,7 @@ export const createShoppingCartAPI = async (idProduct, quantity) => {
         products: idProduct
     }
     const id = idProduct.id;
-    try {
+
         if (token) {
             const res = await axios.post(`http://localhost:8080/api/shopping/create/${id}/${quantity}`, "",
 
@@ -41,10 +41,7 @@ export const createShoppingCartAPI = async (idProduct, quantity) => {
             const res = await axios.post("http://localhost:8080/api/shopping", newValue, {withCredentials: true})
             return res;
         }
-    } catch (e) {
-        console.log(e)
-        return e
-    }
+
 }
 
 export const deleteShoppingCartAPI = async (id, idS) => {
@@ -69,7 +66,6 @@ export const deleteShoppingCartAPI = async (id, idS) => {
 }
 
 export const setShoppingCartAPI = async (index, id, product) => {
-    try {
         if (token != null) {
             const res = await axios.post(`http://localhost:8080/api/shopping/${index}/${id}`, ""
                 ,
@@ -86,9 +82,4 @@ export const setShoppingCartAPI = async (index, id, product) => {
             );
             return res.data;
         }
-
-    } catch (e) {
-        console.log(e)
-        return e
-    }
 }

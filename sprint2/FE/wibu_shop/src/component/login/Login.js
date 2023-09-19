@@ -111,7 +111,7 @@ export function Login() {
                                             <Field
                                                 name="username"
                                                 type="text"
-                                                className="form-control form-control-lg bg-light fs-6"
+                                                className="form-control form-control-lg bg-light fs-6 k"
                                                 placeholder="Tài khoản"
                                             />
                                         </div>
@@ -127,7 +127,7 @@ export function Login() {
                                             <Field
                                                 name="password"
                                                 type="password"
-                                                className="form-control form-control-lg bg-light fs-6"
+                                                className="form-control form-control-lg bg-light fs-6 k"
                                                 placeholder="Mật khẩu"
                                             />
                                         </div>

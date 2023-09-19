@@ -33,7 +33,7 @@ export function Information() {
                 </div>
                 <div className="name">
                     <h1>{customer.name}</h1>
-
+                    <div className="specialize">Vip Member</div> :
                     <ul className="contact">
                         <li>
                             <span>Số Điện thoại </span> {customer.phoneNumber}

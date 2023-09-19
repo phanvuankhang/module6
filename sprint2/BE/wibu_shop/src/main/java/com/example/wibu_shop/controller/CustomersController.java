@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequestMapping("/api/customer")
 @RestController
 @CrossOrigin("*")
@@ -20,7 +22,7 @@ public class CustomersController {
     private ICustomerService customerService;
 
     @PostMapping("/new-customer")
-    public ResponseEntity<CustomersDTO> createCustomer(@RequestBody CustomersDTO customersDTO) {
+    public ResponseEntity<CustomersDTO> createCustomer(@Valid @RequestBody CustomersDTO customersDTO) {
         try {
             customerService.createCustomer(customersDTO);
             return new ResponseEntity<>(HttpStatus.OK);

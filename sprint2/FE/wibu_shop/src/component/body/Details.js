@@ -9,10 +9,9 @@ import {useNavigate, useParams} from "react-router";
 import React, {useEffect, useState} from "react";
 import {getAllProductsAPI, getDetailProductAPI, getImagesProductAPI} from "../../service/ProductsService";
 import {createShoppingCartAPI} from "../../service/ShoppingCartService";
-import { toast} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import {getShoppingCart} from "../../redux/actions/cart";
 import {useDispatch} from "react-redux";
-import {Field, Form, Formik} from "formik";
 
 export function Details() {
     const navigate = useNavigate();
@@ -75,20 +74,20 @@ export function Details() {
 
 
     const getAllProducts = async () => {
-        const rs = await getAllProductsAPI(0, "null")
+        const rs = await getAllProductsAPI(0,"","","")
         setProductList(rs.data.content)
     }
 
     const editQuantity = async (val) => {
-        if (val == 1) {
-            if (quantity < product.quantity) {
-                setQuantity(quantity + 1)
-
+        if (val === 1) { // If val is 1 (increment)
+            if (quantity < product.quantity) { // Check if quantity is less than the maximum allowed quantity
+                setQuantity(quantity + 1); // Increment quantity by 1
+            } else {
+                toast.error(`Số lượng sản phẩm ${product.name} đã đạt tối đa!!`);
             }
-        } else {
-            if (quantity > 0) {
-                setQuantity(quantity - 1)
-
+        } else { // If val is not 1 (decrement)
+            if (quantity > 0) { // Check if quantity is greater than 0
+                setQuantity(quantity - 1); // Decrement quantity by 1
             }
         }
     }
@@ -213,7 +212,7 @@ export function Details() {
                                    infinite>
                             {productList.map((p, index) => (
 
-                                <a onClick={() => reload(p.id)} title="More Details">
+                                <a onClick={() => reload(p.id)} title="Xem chi tiết">
                                     <div className="col-lg-11 col-md-6 portfolio-item filter-web">
                                         <div className="portfolio-wrap">
                                             <img
@@ -245,6 +244,7 @@ export function Details() {
                     </div>
                 </section>
                 {/* End Portfolio Section */}
+                <ToastContainer/>
             </main>
             {/* End #main */}
         </>

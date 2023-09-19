@@ -1,13 +1,14 @@
 import "./fonts/material-icon/css/material-design-iconic-font.min.css";
 import ".//css/style.css";
 import {ErrorMessage, Field, Form, Formik} from "formik";
-import {ToastContainer,toast} from "react-toastify";
+import {ToastContainer, toast} from "react-toastify";
 import React, {useEffect, useState} from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from "sweetalert2";
 import {useNavigate} from "react-router";
 import {createCustomersAPI} from "../../service/CustomersService";
+import * as Yup from "yup";
 
 
 export function Register() {
@@ -32,7 +33,7 @@ export function Register() {
                 '  width: "100%",\n' +
                 '  height: "100%",\n' +
                 '  background-color: "rgba(0, 0, 0, 0.5)" }}/* Màu nền màn hình đen với độ mờ */></div>', // Sử dụng CSS để tạo màn hình đen.
-            timer: 4000,
+            timer: 3000,
             title: "Xin vui lòng chờ trong giây lát.",
             showConfirmButton: false,
             allowOutsideClick: false,
@@ -65,33 +66,61 @@ export function Register() {
                                     username: "",
                                     password: "",
                                     confirmPassword: ""
-                                }} onSubmit={async (values, {setSubmitting}) => {
+                                }}
+                                        validationSchema={Yup.object({
+                                            name: Yup.string()
+                                                .required("Không được để trống!").min(8, "Tên không thể quá ngắn!")
+                                                .matches(/^[\p{Lu}\p{Ll}\p{N}\s]+$/u, "Tên không được chứa ký tự đặc biệt!")
+                                            ,
+                                            address: Yup.string()
+                                                .required("Không được để trống!"),
+                                            username: Yup.string()
+                                                .required("Không được để trống!").min(6, "Tên tài khoản không thể quá ngắn!")
+                                                .matches(/^[a-z0-9]{8,}$/u, "Tên đăng nhập phải là ký tự thường!")
+                                            ,
+                                            password:Yup.string()
+                                                .required("Không được để trống!"),
+                                            birthday:Yup.string().required("Không được để trống!"),
+                                            phoneNumber: Yup.string().required("Không được để trống!")
+                                                .matches(/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/, 'Nhập đúng định dạng SDT ví dụ: 098XXXXXXX (X là chữ số)'),
+                                            email: Yup.string().required("Không được để trống!").email('Nhập đúng định dạng email!'),
+                                            confirmPassword: Yup.string()
+                                                .oneOf([Yup.ref('password'), null], 'Mật khẩu nhập lại không đúng!')
+                                                .required('Không được để trống này!'),
 
-                                        values = {
-                                            ...values,
-                                            usersDTO: {
-                                                username: values.username,
-                                                password: values.password
+                                        })}
+                                        onSubmit={async (values, {setSubmitting}) => {
+
+                                            values = {
+                                                ...values,
+                                                usersDTO: {
+                                                    username: values.username,
+                                                    password: values.password
+                                                }
                                             }
-                                        }
-                                    try {
-                                        await loadSubmit();
-                                        await createCustomersAPI(values);
-                                        navigate('/login');
-                                        toast.success("Đăng ký thành công!");
-                                    } catch (error) {
-                                        toast.error("Đăng ký thất bại!");
-                                    } finally {
-                                        setSubmitting(false);
-                                    }
+                                            try {
+                                                await loadSubmit();
+                                                await createCustomersAPI(values);
+                                                navigate('/login/l');
+                                                await Swal.fire({
+                                                    icon: "success",
+                                                    title: "Đăng ký thành công!",
+                                                    timer: "3000"
+                                                })
+                                            } catch (error) {
+                                                toast.error("Đăng ký thất bại!");
+                                            } finally {
+                                                setSubmitting(false);
+                                            }
 
-                                }}>
-                                    <Form method="POST" className="register-form" id="register-form">
+                                        }}>
+                                    <Form method="POST" className="register-form"  id="register-form">
                                         <div className="form-group ">
                                             <label htmlFor="name">
                                                 <i className="zmdi zmdi-account material-icons-name"/>
                                             </label>
                                             <Field
+                                                className="k"
                                                 type="text"
                                                 name="name"
                                                 id="name"
@@ -107,6 +136,7 @@ export function Register() {
                                                 <i className="zmdi zmdi-email"/>
                                             </label>
                                             <Field
+                                                className="k"
                                                 type="email"
                                                 name="email"
                                                 id="email"
@@ -121,9 +151,9 @@ export function Register() {
                                                     <i className="fa-solid fa-phone-volume"></i>
                                                 </label>
                                                 <Field
+                                                    className="k"
                                                     type="number"
                                                     name="phoneNumber"
-
                                                     placeholder="Số điện thoại"
                                                 />
                                                 <ErrorMessage style={{marginTop: "-5%"}} name="phoneNumber"
@@ -134,10 +164,12 @@ export function Register() {
                                                     <i className="fa-solid fa-phone-volume"></i>
                                                 </label>
                                                 <Field
+                                                    className="k"
                                                     type="date"
                                                     name="birthday"
                                                 />
-
+                                                <ErrorMessage style={{marginTop: "-5%"}} name="birthday" component="span"
+                                                              className="error-r"/>
                                             </div>
                                         </div>
                                         <div className="form-group ">
@@ -145,6 +177,7 @@ export function Register() {
                                                 <i className="fa-solid fa-user-plus"></i>
                                             </label>
                                             <Field
+                                                className="k"
                                                 type="text"
                                                 name="address"
                                                 placeholder="Địa chỉ"
@@ -158,6 +191,7 @@ export function Register() {
                                                     <i className="fa-solid fa-user-plus"></i>
                                                 </label>
                                                 <Field
+                                                    className="k"
                                                     type="text"
                                                     name="username"
                                                     placeholder="Tài khoản"
@@ -192,6 +226,7 @@ export function Register() {
                                                 <i className="zmdi zmdi-lock"/>
                                             </label>
                                             <Field
+                                                className="k"
                                                 type="password"
                                                 name="password"
                                                 id="pass"
@@ -205,12 +240,14 @@ export function Register() {
                                                 <i className="zmdi zmdi-lock-outline"/>
                                             </label>
                                             <Field
+                                                className="k"
                                                 type="password"
                                                 name="confirmPassword"
                                                 id="re_pass"
                                                 placeholder="Nhập lại mật khẩu"
                                             />
-                                            <ErrorMessage style={{marginTop: "-5%"}} name="confirmPassword" component="span"
+                                            <ErrorMessage style={{marginTop: "-5%"}} name="confirmPassword"
+                                                          component="span"
                                                           className="error-r"/>
                                         </div>
 

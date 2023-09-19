@@ -14,6 +14,7 @@ import {History} from "./component/body/History";
 import {Information} from "./component/body/Information";
 import Provider from "react-redux/es/components/Provider";
 import store from "./redux/store";
+import Return from "./component/body/Vnpay";
 
 function App() {
     return (
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/about" element={<AboutUs/>}/>
                 <Route path="/history" element={<History/>}/>
                 <Route path="/information" element={<Information/>}/>
+                <Route path="/return" element={<Return/>}/>
             </Routes>
             <Footer/>
         </Provider>
