@@ -32,7 +32,7 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
     @PostMapping("")
     public ResponseEntity<?> createOrder() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -94,7 +94,7 @@ public class ShoppingCartController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCart(@PathVariable Long id) {
         try {
@@ -106,8 +106,7 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/create/{id}/{quantity}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
-
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
     public ResponseEntity<?> createCart(@PathVariable("id") Long id, @PathVariable("quantity") Integer quantity) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -121,6 +120,7 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/{index}/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
     public ResponseEntity<?> setCart(@PathVariable Integer index, @PathVariable Long id, HttpServletRequest httpServletRequest) {
         List<ShoppingCart> shoppingCartList = new ArrayList<>();
         HttpSession session = httpServletRequest.getSession();

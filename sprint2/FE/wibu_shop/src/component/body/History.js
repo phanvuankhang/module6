@@ -72,7 +72,7 @@ export function History() {
 
 
     useEffect(() => {
-        document.title = "History Order";
+        document.title = "Lịch sử giao dịch";
         window.scrollTo(0, 0)
         getBill()
     }, []);

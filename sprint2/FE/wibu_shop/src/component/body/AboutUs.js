@@ -2,6 +2,8 @@ import {useEffect} from "react";
 
 export const AboutUs = () => {
     useEffect(()=>{
+        document.title = "Về chúng tôi";
+
         window.scrollTo(0, 0)
     })
     return (

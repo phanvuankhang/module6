@@ -20,6 +20,14 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
 
     @Override
     public List<ShoppingCart> findAllByCustomer(Long id) {
+        List<ShoppingCart> shoppingCartList = shoppingCartRepository.findAllByCustomers_Id(id);
+        for (ShoppingCart s : shoppingCartList) {
+            if (s.getQuantity() >= s.getProducts().getQuantity() && s.getProducts().getQuantity() > 0) {
+                s.setQuantity(s.getProducts().getQuantity());
+            } else if (s.getProducts().getQuantity() == 0) {
+                shoppingCartRepository.deleteById(s.getId());
+            }
+        }
         return shoppingCartRepository.findAllByCustomers_Id(id);
     }
 
@@ -40,8 +48,12 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
         } else {
             shoppingCart.setPrice(shoppingCart.getProducts().getPrice() * (shoppingCart.getQuantity() + quantity));
             shoppingCart.setQuantity(shoppingCart.getQuantity() + quantity);
-            shoppingCartRepository.save(shoppingCart);
-            return new ResponseEntity<>(HttpStatus.OK);
+            if (shoppingCart.getQuantity() >= shoppingCart.getProducts().getQuantity()) {
+                return new ResponseEntity<>("Số lượng sản phẩm trong giỏ hàng vượt quá số lượng trong kho.!!", HttpStatus.OK);
+            } else {
+                shoppingCartRepository.save(shoppingCart);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
         }
 
 

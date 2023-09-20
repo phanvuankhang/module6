@@ -61,10 +61,14 @@ export function Details() {
     }
 
     const addCart = async () => {
-        await createShoppingCartAPI(product, quantity)
-        await dispatch(getShoppingCart());
-        toast.success(`Thêm ${quantity} sản phẩm ${product.name} vào giỏ hàng thành công!!`)
-        navigate("/")
+        try {
+            await createShoppingCartAPI(product, quantity)
+            await dispatch(getShoppingCart());
+            toast.success(`Thêm ${quantity} sản phẩm ${product.name} vào giỏ hàng thành công!!`)
+            navigate("/")
+        } catch (e) {
+            toast.error(`Số lượng sản phẩm ${product.name} không đủ!!`)
+        }
     }
 
     useEffect(() => {
@@ -74,7 +78,7 @@ export function Details() {
 
 
     const getAllProducts = async () => {
-        const rs = await getAllProductsAPI(0,"","","")
+        const rs = await getAllProductsAPI(0, "", "", "")
         setProductList(rs.data.content)
     }
 
@@ -108,7 +112,8 @@ export function Details() {
                                     <div className="row">
                                         <div className="col-md-7 p-relative r-left">
                                             <div className="full back_blog text_align_center padding_right_left_15">
-                                                <Carousel interval={5000} infiniteLoop={true} autoPlay={true}  showArrows={false}  showStatus={false}>
+                                                <Carousel interval={5000} infiniteLoop={true} autoPlay={true}
+                                                          showArrows={false} showStatus={false}>
 
                                                     {images.map((i) => (
                                                         <img

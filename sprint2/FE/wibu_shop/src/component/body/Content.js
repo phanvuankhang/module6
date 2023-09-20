@@ -87,6 +87,7 @@ export function Content() {
     }
     useEffect(() => {
         getProductList();
+        document.title = "Wibu Shop - Mô hình anime giá rẻ chất lượng";
 
         window.scrollTo(0, 0)
     }, [])
@@ -94,6 +95,7 @@ export function Content() {
     return (
         <>
             {/* ======= Hero Section ======= */}
+
             <section id="hero" className="d-flex align-items-center">
                 <div className="container">
                     <div className="row">
@@ -114,7 +116,7 @@ export function Content() {
                             data-aos="fade-left"
                             data-aos-delay={200}
                         >
-                            <img src="quatnav.jpg" className="img-fluid animated" alt=""/>
+                            <img src="" className="img-fluid animated" alt=""/>
                         </div>
                     </div>
                 </div>
