@@ -12,6 +12,7 @@ import {createShoppingCartAPI} from "../../service/ShoppingCartService";
 import {toast, ToastContainer} from "react-toastify";
 import {getShoppingCart} from "../../redux/actions/cart";
 import {useDispatch} from "react-redux";
+import Swal from "sweetalert2";
 
 export function Details() {
     const navigate = useNavigate();
@@ -63,8 +64,12 @@ export function Details() {
     const addCart = async () => {
         try {
             await createShoppingCartAPI(product, quantity)
-            await dispatch(getShoppingCart());
-            toast.success(`Thêm ${quantity} sản phẩm ${product.name} vào giỏ hàng thành công!!`)
+            dispatch(getShoppingCart())
+            Swal.fire({
+                icon: "success",
+                title: `Thêm <span style="color: #3498db">${quantity}</span> sản phẩm <span style="color: #3498db">${product.name}</span> vào giỏ hàng thành công!!`,
+                timer: "3000"
+            })
             navigate("/")
         } catch (e) {
             toast.error(`Số lượng sản phẩm ${product.name} không đủ!!`)

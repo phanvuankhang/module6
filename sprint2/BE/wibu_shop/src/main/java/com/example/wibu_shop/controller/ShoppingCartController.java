@@ -58,10 +58,17 @@ public class ShoppingCartController {
             shoppingCartList = (List<ShoppingCart>) session.getAttribute("cart");
             int count = 0;
             for (int i = 0; i < shoppingCartList.size(); i++) {
-                if (shoppingCart.getProducts().getId() == shoppingCartList.get(i).getProducts().getId()) {
-                    shoppingCartList.get(i).setPrice((shoppingCartList.get(i).getQuantity() + shoppingCart.getQuantity()) * shoppingCartList.get(i).getProducts().getPrice());
-                    shoppingCartList.get(i).setQuantity(shoppingCartList.get(i).getQuantity() + shoppingCart.getQuantity());
-                    count++;
+                ShoppingCart cartItem = shoppingCartList.get(i);
+                if (shoppingCart.getProducts().getId() == cartItem.getProducts().getId()) {
+                    int availableQuantity = shoppingCart.getProducts().getQuantity();
+                    int requestedQuantity = cartItem.getQuantity() + shoppingCart.getQuantity();
+                    if (requestedQuantity > availableQuantity) {
+                        return new ResponseEntity<>("Số lượng sản phẩm trong giỏ hàng vượt quá số lượng có sẵn trong kho.", HttpStatus.BAD_REQUEST);
+                    }else {
+                        cartItem.setPrice(requestedQuantity * cartItem.getProducts().getPrice());
+                        cartItem.setQuantity(requestedQuantity);
+                        count++;
+                    }
                 }
             }
             if (count == 0) {
@@ -74,7 +81,7 @@ public class ShoppingCartController {
             session.setAttribute("cart", shoppingCartList);
         }
         session.setAttribute("cart", shoppingCartList);
-        return new ResponseEntity<>(session.getAttribute("cart"), HttpStatus.OK);
+        return new ResponseEntity<>(session.getAttribute("cart"),HttpStatus.OK);
     }
 
     @DeleteMapping("delete-session/{id}")
@@ -120,7 +127,6 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/{index}/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
     public ResponseEntity<?> setCart(@PathVariable Integer index, @PathVariable Long id, HttpServletRequest httpServletRequest) {
         List<ShoppingCart> shoppingCartList = new ArrayList<>();
         HttpSession session = httpServletRequest.getSession();
@@ -134,8 +140,12 @@ public class ShoppingCartController {
                             shoppingCartList.get(i).setPrice(shoppingCartList.get(i).getProducts().getPrice() * (shoppingCartList.get(i).getQuantity() - 1));
                             shoppingCartList.get(i).setQuantity(shoppingCartList.get(i).getQuantity() - 1);
                         } else {
-                            shoppingCartList.get(i).setPrice(shoppingCartList.get(i).getProducts().getPrice() * (shoppingCartList.get(i).getQuantity() + 1));
-                            shoppingCartList.get(i).setQuantity(shoppingCartList.get(i).getQuantity() + 1);
+                            if (shoppingCartList.get(i).getQuantity() >= shoppingCartList.get(i).getProducts().getQuantity()) {
+                                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                            } else {
+                                shoppingCartList.get(i).setPrice(shoppingCartList.get(i).getProducts().getPrice() * (shoppingCartList.get(i).getQuantity() + 1));
+                                shoppingCartList.get(i).setQuantity(shoppingCartList.get(i).getQuantity() + 1);
+                            }
                         }
                     }
                 }

@@ -40,20 +40,14 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
             shoppingCartNew.setQuantity(quantity);
             shoppingCartNew.setCustomers(customers);
             shoppingCartNew.setProducts(products);
-            shoppingCartRepository.save(shoppingCartNew);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(shoppingCartRepository.save(shoppingCartNew), HttpStatus.OK);
         }
         if (shoppingCart.getQuantity() >= shoppingCart.getProducts().getQuantity()) {
             return new ResponseEntity<>("Số lượng sản phẩm trong giỏ hàng vượt quá số lượng trong kho.!!", HttpStatus.BAD_REQUEST);
         } else {
             shoppingCart.setPrice(shoppingCart.getProducts().getPrice() * (shoppingCart.getQuantity() + quantity));
             shoppingCart.setQuantity(shoppingCart.getQuantity() + quantity);
-            if (shoppingCart.getQuantity() >= shoppingCart.getProducts().getQuantity()) {
-                return new ResponseEntity<>("Số lượng sản phẩm trong giỏ hàng vượt quá số lượng trong kho.!!", HttpStatus.OK);
-            } else {
-                shoppingCartRepository.save(shoppingCart);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
+            return new ResponseEntity<>(shoppingCartRepository.save(shoppingCart), HttpStatus.OK);
         }
 
 

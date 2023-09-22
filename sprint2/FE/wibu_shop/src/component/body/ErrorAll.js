@@ -1,8 +1,12 @@
+import React from "react";
+
 export function ErrorAll() {
     return (
         <>
-        <h3 style={{marginTop:"20%",marginBottom:"20%",marginLeft:"30%",color:"red"}}>Trang này hiện chưa có dữ liệu! Vui lòng quay lại.</h3>
-        
+            <>
+                <img src="https://images.hdqwalls.com/wallpapers/love-live-sunshine-404-error-4k-wo.jpg" alt=""/>
+            </>
         </>
+
     )
 }

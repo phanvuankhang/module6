@@ -13,7 +13,9 @@ import * as Yup from "yup";
 
 export function Register() {
     const navigate = useNavigate();
-
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    const minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -75,12 +77,13 @@ export function Register() {
                                             address: Yup.string()
                                                 .required("Không được để trống!"),
                                             username: Yup.string()
-                                                .required("Không được để trống!").min(6, "Tên tài khoản không thể quá ngắn!")
+                                                .required("Không được để trống!").min(6, "Tên tài khoản không thể quá ngắn!").max(50, "Tên tài khoản không thể quá dài!")
                                                 .matches(/^[a-z0-9]{8,}$/u, "Tên đăng nhập phải là ký tự thường!")
                                             ,
                                             password:Yup.string()
                                                 .required("Không được để trống!"),
-                                            birthday:Yup.string().required("Không được để trống!"),
+                                            birthday:Yup.string().required("Không được để trống!").max(maxDate, 'Khách hàng phải trên 18 tuổi.')
+                                                .min(minDate, 'Khách hàng phải trên 18 tuổi và dưới 100 tuổi.'),
                                             phoneNumber: Yup.string().required("Không được để trống!")
                                                 .matches(/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/, 'Nhập đúng định dạng SDT ví dụ: 098XXXXXXX (X là chữ số)'),
                                             email: Yup.string().required("Không được để trống!").email('Nhập đúng định dạng email!'),
