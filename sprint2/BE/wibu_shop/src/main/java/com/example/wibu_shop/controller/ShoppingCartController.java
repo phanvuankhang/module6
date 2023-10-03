@@ -136,15 +136,17 @@ public class ShoppingCartController {
                 shoppingCartList = (List<ShoppingCart>) session.getAttribute("cart");
                 if (shoppingCartList != null) {
                     for (int i = 0; i < shoppingCartList.size(); i++) {
-                        if (index == 0) {
-                            shoppingCartList.get(i).setPrice(shoppingCartList.get(i).getProducts().getPrice() * (shoppingCartList.get(i).getQuantity() - 1));
-                            shoppingCartList.get(i).setQuantity(shoppingCartList.get(i).getQuantity() - 1);
-                        } else {
-                            if (shoppingCartList.get(i).getQuantity() >= shoppingCartList.get(i).getProducts().getQuantity()) {
-                                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                        if (shoppingCartList.get(i).getProducts().getId() == id) {
+                            if (index == 0) {
+                                shoppingCartList.get(i).setPrice(shoppingCartList.get(i).getProducts().getPrice() * (shoppingCartList.get(i).getQuantity() - 1));
+                                shoppingCartList.get(i).setQuantity(shoppingCartList.get(i).getQuantity() - 1);
                             } else {
-                                shoppingCartList.get(i).setPrice(shoppingCartList.get(i).getProducts().getPrice() * (shoppingCartList.get(i).getQuantity() + 1));
-                                shoppingCartList.get(i).setQuantity(shoppingCartList.get(i).getQuantity() + 1);
+                                if (shoppingCartList.get(i).getQuantity() >= shoppingCartList.get(i).getProducts().getQuantity()) {
+                                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                                } else {
+                                    shoppingCartList.get(i).setPrice(shoppingCartList.get(i).getProducts().getPrice() * (shoppingCartList.get(i).getQuantity() + 1));
+                                    shoppingCartList.get(i).setQuantity(shoppingCartList.get(i).getQuantity() + 1);
+                                }
                             }
                         }
                     }
@@ -152,7 +154,6 @@ public class ShoppingCartController {
                 session.setAttribute("cart", shoppingCartList);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
-
             return shoppingCartService.setCart(index, id);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
